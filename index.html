@@ -93,9 +93,9 @@ body {
     padding: 8px 20px; border-radius: 8px; font-size: 14px; font-weight: 700;
     text-align: center; display: inline-block;
 }
-.org-node.erin { background: #263238; color: #fff; font-size: 16px; padding: 10px 28px; }
-.org-branches { display: flex; gap: 40px; width: 100%; }
-.org-branch { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.org-node.erin { background: #263238; color: #fff; font-size: 16px; padding: 10px 28px; white-space: nowrap; }
+.org-branches { display: flex; gap: 24px; width: 100%; align-items: center; justify-content: center; }
+.org-branch { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; }
 .org-branch-label {
     font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase;
     letter-spacing: 1px; padding: 4px 12px; background: #f5f5f5;
@@ -112,6 +112,9 @@ body {
 .org-leaf.it-member { border-color: #b39ddb; color: #311b92; background: #ede7f6; }
 .org-connector {
     width: 2px; height: 20px; background: #bdbdbd;
+}
+.org-connector-h {
+    width: 32px; height: 2px; background: #bdbdbd; flex-shrink: 0;
 }
 
 /* ---- Gantt section ---- */
@@ -664,6 +667,7 @@ body {
     .demo-card-media { min-width: 0; }
     .bg-body { flex-direction: column; }
     .org-branches { flex-direction: column; gap: 20px; }
+    .org-connector-h { width: 2px; height: 16px; }
 }
 
 /* Print */
@@ -734,8 +738,6 @@ body {
         <div class="bg-card">
             <h3>协作团队</h3>
             <div class="org-chart">
-                <div class="org-node erin">俞沁 Erin &nbsp;—&nbsp; PM / 需求 / 测试</div>
-                <div class="org-connector"></div>
                 <div class="org-branches">
                     <div class="org-branch">
                         <div class="org-branch-label">业务侧</div>
@@ -747,6 +749,9 @@ body {
                             <div class="org-leaf biz-member">Cheryl<br><small>公司开户</small></div>
                         </div>
                     </div>
+                    <div class="org-connector-h"></div>
+                    <div class="org-node erin">俞沁 Erin &nbsp;—&nbsp; PM / 需求 / 测试</div>
+                    <div class="org-connector-h"></div>
                     <div class="org-branch">
                         <div class="org-branch-label">IT 侧</div>
                         <div class="org-row">
