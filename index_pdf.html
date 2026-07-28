@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI自动化项目汇报</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-padding-top: 52px; }
+body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif;
+    background: #f0f2f5; color: #1a1a1a; font-size: 15px;
+    scroll-behavior: smooth;
+}
+
+/* ---- Top nav ---- */
+.topnav {
+    position: sticky; top: 0; z-index: 1000;
+    background: #263238; display: flex; align-items: center;
+    padding: 0 28px; gap: 0; box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+.topnav a {
+    display: block; padding: 14px 20px; color: #90a4ae;
+    text-decoration: none; font-size: 14px; font-weight: 600;
+    border-bottom: 3px solid transparent; transition: all .15s;
+}
+.topnav a:hover { color: #fff; background: #37474f; }
+.topnav a.active { color: #fff; border-bottom-color: #2196f3; }
+
+.section {
+    max-width: 1400px; margin: 0 auto 24px;
+    background: #fff; border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.08); overflow: hidden;
+}
+
+/* ---- Cover ---- */
+.cover {
+    background: url('demo_images/cover_bg.jpg') top center/100% auto no-repeat;
+    background-color: #e8ecf1;
+    color: #0C306E; padding: 60px 48px 120px; text-align: center;
+    position: relative; min-height: 480px;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+    border-radius: 8px 8px 0 0;
+}
+.cover::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to top, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 35%);
+    pointer-events: none;
+}
+.cover > * { position: relative; }
+.cover h1 { font-size: 48px; font-weight: 800; letter-spacing: 2px; color: #0C306E; }
+.cover .role { font-size: 22px; color: #0C306E; margin-top: 16px; font-weight: 600; }
+.cover .meta { font-size: 16px; color: #1a4a8a; margin-top: 12px; display: flex; gap: 28px; justify-content: center; font-weight: 500; }
+.cover .duration {
+    display: inline-block; margin-top: 24px; padding: 6px 20px;
+    border: 1px solid #0C306E; border-radius: 20px;
+    font-size: 14px; color: #0C306E; font-weight: 600;
+}
+
+/* Cover section — standalone */
+#cover.section {
+    background: transparent; box-shadow: none;
+}
+
+/* ---- Section header ---- */
+.sec-header {
+    padding: 28px 40px 0; display: flex; align-items: center; gap: 12px;
+}
+.sec-header .num {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: #2196f3; color: #fff; display: flex;
+    align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 800; flex-shrink: 0;
+}
+.sec-header h2 { font-size: 24px; font-weight: 700; color: #111; }
+.sec-header .time-badge {
+    margin-left: auto; font-size: 13px; color: #888;
+    background: #f5f5f5; padding: 4px 12px; border-radius: 12px;
+}
+
+/* ---- Background section ---- */
+.bg-body { padding: 24px 40px 36px; display: flex; gap: 32px; flex-wrap: wrap; }
+.bg-card {
+    flex: 1; min-width: 300px; border: 1px solid #e0e0e0;
+    border-radius: 8px; padding: 20px 24px;
+}
+.bg-card h3 { font-size: 17px; font-weight: 700; color: #37474f; margin-bottom: 16px; }
+.bg-card .goal { font-size: 15px; color: #444; line-height: 1.8; }
+
+/* Org chart */
+.org-chart { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.org-node {
+    padding: 8px 20px; border-radius: 8px; font-size: 14px; font-weight: 700;
+    text-align: center; display: inline-block;
+}
+.org-node.erin {
+    background: #263238; color: #fff; font-size: 12px; padding: 5px 12px;
+    white-space: nowrap; border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
+    position: relative; z-index: 1; line-height: 1.3;
+}
+.org-node.erin small {
+    font-size: 10px; font-weight: 400; color: #b0bec5;
+    display: block; margin-top: 0;
+}
+.org-branches { display: flex; gap: 0; width: 100%; align-items: center; justify-content: center; }
+.org-branch { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; }
+.org-branch-label {
+    font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase;
+    letter-spacing: 1px; padding: 4px 12px; background: #f5f5f5;
+    border-radius: 4px;
+}
+.org-branch .org-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.org-leaf {
+    padding: 6px 14px; border-radius: 6px; font-size: 13px;
+    border: 1.5px solid; text-align: center;
+}
+.org-leaf.biz { border-color: #ff9800; color: #e65100; background: #fff8e1; }
+.org-leaf.biz-member { border-color: #f48fb1; color: #880e4f; background: #fce4ec; }
+.org-leaf.it-lead { border-color: #2196f3; color: #0d47a1; background: #e3f2fd; }
+.org-leaf.it-member { border-color: #b39ddb; color: #311b92; background: #ede7f6; }
+.org-connector {
+    width: 2px; height: 20px; background: #bdbdbd;
+}
+.org-bridge {
+    display: flex; align-items: center; gap: 0; flex-shrink: 0;
+}
+.org-bridge-bar {
+    width: 36px; height: 5px; background: #263238; border-radius: 3px; flex-shrink: 0;
+}
+.org-bridge-dot {
+    width: 10px; height: 10px; background: #263238; border-radius: 50%; flex-shrink: 0;
+    margin: 0 -2px;
+}
+
+/* ---- Gantt section ---- */
+.gantt-wrap { padding: 16px 32px 28px; }
+.gantt-summary-line {
+    font-size: 14px; color: #555; padding: 0 0 12px;
+    border-bottom: 1px solid #eee; margin-bottom: 16px;
+}
+.gantt-summary-line strong { color: #2196f3; }
+
+/* ---- Gantt chart styles (same as before) ---- */
+.filter-bar { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
+.filter-label { font-size: 14px; color: #888; margin-right: 4px; }
+.filter-btn {
+    padding: 6px 18px; border: 1.5px solid #d0d0d0; border-radius: 16px;
+    background: #fff; font-size: 14px; font-weight: 600; color: #555; cursor: pointer; transition: all .15s;
+}
+.filter-btn:hover { border-color: #2196f3; color: #2196f3; }
+.filter-btn.active { background: #2196f3; border-color: #2196f3; color: #fff; }
+
+.legend { display: flex; gap: 18px; align-items: center; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 14px; color: #555; }
+.legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+.legend-dot.done { background: #4caf50; }
+.legend-dot.progress { background: #2196f3; }
+.legend-dot.pending { background: #bdbdbd; }
+.legend-dot.milestone { width: 0; height: 0; border: 6px solid transparent; border-bottom-color: #e91e63; transform: rotate(0deg); border-radius: 0; }
+
+.gantt-table { display: flex; flex-direction: column; overflow-x: auto; }
+.gantt-row { display: flex; border-bottom: 1px solid #f0f0f0; min-height: 38px; align-items: stretch; }
+.gantt-row.phase { background: #fafbfc; }
+.gantt-row.task { background: #fff; }
+.gantt-row.task.stripe { background: #fafafa; }
+.gantt-row.hidden { display: none; }
+.gantt-row.today-active { box-shadow: inset 4px 0 0 0 rgba(229,57,53,0.20); }
+.gantt-row.overdue { background: rgba(255,152,0,0.06); }
+.gantt-row.overdue .col-status .status-tag.pending {
+    background: #fff3e0; color: #e65100;
+    border: 1px solid #ffcc80;
+}
+
+.left-panel { display: flex; flex-shrink: 0; border-right: 2px solid #e0e0e0; }
+.left-col { padding: 8px 12px; display: flex; align-items: center; font-size: 14px; }
+.col-label { width: 310px; }
+.col-owner { width: 82px; color: #666; }
+.col-days { width: 48px; color: #666; justify-content: center; }
+.col-status { width: 70px; }
+.col-dates { width: 165px; color: #888; font-size: 13px; }
+
+.phase .col-label { font-weight: 700; font-size: 15px; color: #111; }
+.task .col-label { padding-left: 28px; }
+
+.toggle-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; margin-right: 6px; border-radius: 4px;
+    cursor: pointer; user-select: none; font-size: 12px; color: #666;
+    background: #e8e8e8; transition: transform .2s, background .15s; flex-shrink: 0;
+}
+.toggle-btn:hover { background: #d0d0d0; }
+.toggle-btn.expanded { transform: rotate(0deg); }
+.toggle-btn.collapsed { transform: rotate(-90deg); }
+.toggle-btn.no-children { visibility: hidden; }
+
+.status-tag { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 13px; font-weight: 600; }
+.status-tag.done { background: #e8f5e9; color: #2e7d32; }
+.status-tag.progress { background: #e3f2fd; color: #1565c0; }
+.status-tag.pending { background: #f5f5f5; color: #888; }
+
+.chart-wrapper { flex: 1; position: relative; overflow-x: auto; }
+
+.chart-row { position: relative; height: 38px; border-bottom: 1px solid #f0f0f0; }
+.chart-row.phase { background: #fafbfc; }
+.chart-row.task { background: #fff; }
+.chart-row.task.stripe { background: #fafafa; }
+
+.chart-grid { position: absolute; top: 0; bottom: 0; left: 0; right: 0; display: flex; pointer-events: none; z-index: 1; }
+.chart-grid .grid-week { flex: 1; border-right: 1px solid #f0f0f0; min-width: 48px; }
+.chart-grid .grid-week:last-child { border-right: none; }
+
+.gantt-bar {
+    position: absolute; top: 7px; height: 24px; border-radius: 4px; z-index: 2;
+    display: flex; align-items: center; padding: 0 8px;
+    font-size: 13px; color: #fff; font-weight: 500;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    cursor: pointer; transition: filter .15s;
+}
+.gantt-bar:hover { filter: brightness(0.88); }
+.gantt-bar.done { background: #4caf50; }
+.gantt-bar.progress { background: #2196f3; }
+.gantt-bar.pending { background: #bdbdbd; }
+
+.phase .gantt-bar { top: 5px; height: 28px; border-radius: 5px; font-weight: 700; font-size: 14px; overflow: hidden; padding: 0; }
+.gantt-bar-fill {
+    position: absolute; left: 0; top: 0; height: 100%;
+    border-radius: 5px 0 0 5px; z-index: 0;
+}
+.gantt-bar-fill.full { border-radius: 5px; }
+.gantt-bar-text {
+    position: relative; z-index: 1; padding: 0 8px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.milestone-row {
+    display: flex; height: 32px; border-bottom: 1px solid #e0e0e0;
+    background: #fafafa; align-items: stretch;
+}
+.milestone-row.hidden { display: none; }
+.milestone-left {
+    display: flex; flex-shrink: 0; border-right: 2px solid #e0e0e0;
+    align-items: center; padding: 0 12px; font-size: 13px; color: #888;
+    width: 664px;
+}
+.milestone-chart { flex: 1; position: relative; }
+.milestone-marker {
+    position: absolute; top: 4px; z-index: 12; cursor: pointer;
+}
+.milestone-diamond {
+    width: 14px; height: 14px; background: #e91e63;
+    transform: rotate(45deg); margin: 0 auto;
+    border-radius: 2px;
+}
+.milestone-label {
+    font-size: 12px; color: #e91e63; font-weight: 600;
+    text-align: center; margin-top: 2px; white-space: nowrap;
+    transform: translateX(-50%); margin-left: 7px;
+}
+
+#tooltip {
+    position: fixed; z-index: 9999; pointer-events: none;
+    background: rgba(30,30,30,0.92); color: #fff; border-radius: 6px;
+    padding: 10px 14px; font-size: 14px; line-height: 1.6;
+    max-width: 360px; white-space: nowrap;
+    opacity: 0; transition: opacity .12s; box-shadow: 0 4px 16px rgba(0,0,0,.18);
+}
+#tooltip.show { opacity: 1; }
+#tooltip .tip-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+#tooltip .tip-row { display: flex; gap: 18px; }
+#tooltip .tip-label { color: #aaa; }
+
+.today-line {
+    position: absolute; top: 0; bottom: 0; width: 2px;
+    background: #e53935; z-index: 10; pointer-events: none;
+}
+.today-line::before {
+    content: '今天'; position: absolute; top: -20px; left: -14px;
+    font-size: 12px; color: #e53935; font-weight: 700; white-space: nowrap;
+}
+
+.header-dark { background: #263238; min-height: 28px; }
+.header-dark .left-panel { background: #263238; border-right-color: #37474f; }
+.month-cell { text-align: center; font-size: 12px; color: #78909c; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+.week-header { display: flex; height: 32px; background: #37474f; border-bottom: 1px solid #455a64; }
+.week-cell {
+    flex: 1; text-align: center; font-size: 12px; color: #b0bec5;
+    display: flex; align-items: center; justify-content: center;
+    border-right: 1px solid #455a64; min-width: 48px;
+}
+.week-cell:last-child { border-right: none; }
+
+.summary-section {
+    padding: 20px 32px 24px; border-top: 2px solid #e0e0e0;
+    display: flex; gap: 40px; flex-wrap: wrap;
+}
+.summary-card { flex: 1; min-width: 280px; }
+.summary-card h3 {
+    font-size: 16px; font-weight: 700; color: #333; margin-bottom: 10px;
+}
+.summary-row {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+}
+.summary-label { font-size: 14px; color: #666; width: 60px; }
+.summary-bar-wrap {
+    flex: 1; height: 24px; background: #eee; border-radius: 4px; overflow: hidden; position: relative;
+}
+.summary-bar-fill {
+    height: 100%; border-radius: 4px; transition: width .3s;
+}
+.summary-bar-fill.ab { background: #2196f3; }
+.summary-bar-fill.c { background: #ff9800; }
+.summary-bar-text {
+    position: absolute; top: 0; left: 0; right: 0; height: 100%;
+    display: flex; align-items: center; padding: 0 10px;
+    font-size: 13px; font-weight: 700; color: #333;
+}
+.summary-pct { font-size: 15px; font-weight: 700; color: #333; width: 44px; text-align: right; }
+.summary-detail { font-size: 13px; color: #999; margin-left: 60px; }
+
+/* ---- Requirements section ---- */
+.req-body { padding: 24px 40px 36px; }
+.req-grid { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+.req-grid .flow-card {
+    flex: 1; min-width: 340px; border: 1px solid #e0e0e0;
+    border-radius: 8px; overflow: hidden;
+}
+.flow-card h3 {
+    padding: 12px 16px; font-size: 15px; font-weight: 700;
+    color: #37474f; background: #eceff1; border-bottom: 1px solid #e0e0e0;
+}
+.flow-card .flow-body { padding: 16px; }
+
+/* BMO flow */
+.flow-steps { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; padding: 8px 0; }
+.flow-step {
+    padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+    text-align: center; white-space: nowrap;
+}
+.flow-step.s1 { background: #e3f2fd; color: #1565c0; }
+.flow-step.s2 { background: #e3f2fd; color: #1565c0; }
+.flow-step.s3 { background: #e3f2fd; color: #1565c0; }
+.flow-step.s4 { background: #e3f2fd; color: #1565c0; }
+.flow-step.s5 { background: #e3f2fd; color: #1565c0; }
+.flow-arrow { font-size: 18px; color: #bdbdbd; margin: 0 1px; font-weight: 700; }
+
+/* Opening flow comparison */
+.flow-compare { display: flex; gap: 16px; }
+.flow-compare .flow-col {
+    flex: 1; border: 1px solid #e0e0e0; border-radius: 8px;
+    overflow: hidden;
+}
+.flow-col h4 {
+    padding: 10px 14px; font-size: 14px; font-weight: 700;
+    color: #fff; text-align: center;
+}
+.flow-col.ind h4 { background: #2196f3; }
+.flow-col.corp h4 { background: #ff9800; }
+.flow-col .flow-items { padding: 10px 14px; display: flex; flex-direction: column; gap: 8px; }
+.flow-item {
+    display: flex; align-items: center; gap: 8px; font-size: 13px; color: #444;
+    padding: 6px 10px; background: #fafafa; border-radius: 4px;
+}
+.flow-item .dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.flow-item .dot.blue { background: #2196f3; }
+.flow-item .dot.orange { background: #ff9800; }
+
+/* Pain points */
+.pain-section { margin-top: 24px; }
+.pain-section h3 {
+    font-size: 17px; font-weight: 700; color: #37474f; margin-bottom: 16px;
+    padding-left: 12px; border-left: 4px solid #2196f3;
+}
+.scenario-block {
+    border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; margin-bottom: 16px;
+}
+.scenario-header {
+    padding: 10px 16px; font-size: 15px; font-weight: 700; color: #37474f;
+    background: #eceff1; border-bottom: 1px solid #e0e0e0;
+    display: flex; align-items: center; gap: 8px;
+}
+.scenario-header .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 12px; font-weight: 700;
+}
+.scenario-header .badge.a { background: #2196f3; color: #fff; }
+.scenario-header .badge.b { background: #ff9800; color: #fff; }
+.compare-head {
+    display: flex; font-size: 14px; font-weight: 700; text-align: center;
+}
+.compare-head .col-pain {
+    flex: 1; padding: 10px 8px; background: #ffebee; color: #b71c1c;
+    border-right: 1px solid #ffcdd2;
+}
+.compare-head .col-fix {
+    flex: 1; padding: 10px 8px; background: #e8f5e9; color: #1b5e20;
+}
+.compare-row {
+    display: flex; border-top: 1px solid #f0f0f0;
+}
+.compare-row:nth-child(odd) { background: #fafafa; }
+.compare-row .col-pain {
+    flex: 1; padding: 10px 12px; font-size: 14px; color: #555;
+    border-right: 1px solid #ffcdd2; background: #fffbfb;
+    display: flex; align-items: flex-start; gap: 8px;
+}
+.compare-row .col-fix {
+    flex: 1; padding: 10px 12px; font-size: 14px; color: #555;
+    background: #fbfffb;
+    display: flex; align-items: flex-start; gap: 8px;
+}
+.compare-row .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 50%; font-size: 12px;
+    font-weight: 700; flex-shrink: 0;
+}
+.compare-row .col-pain .num { background: #ffcdd2; color: #b71c1c; }
+.compare-row .col-fix .num { background: #c8e6c9; color: #1b5e20; }
+.compare-row .text { padding-top: 1px; line-height: 1.6; }
+.compare-summary {
+    display: flex; border-top: 2px solid #bdbdbd;
+    background: #f5f5f5; font-weight: 700;
+}
+.compare-summary .col-pain {
+    flex: 1; padding: 10px 12px; font-size: 14px; color: #555;
+    border-right: 1px solid #bdbdbd; background: #fafafa;
+    display: flex; align-items: flex-start; gap: 8px;
+}
+.compare-summary .col-fix {
+    flex: 1; padding: 10px 12px; font-size: 14px; color: #555;
+    background: #fafafa;
+    display: flex; align-items: flex-start; gap: 8px;
+}
+.compare-summary .summary-tag {
+    display: inline-block; padding: 2px 6px; border-radius: 3px;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+    background: #616161; color: #fff;
+}
+.compare-summary .text { padding-top: 1px; line-height: 1.6; }
+.compare-summary .arrow { color: #ff9800; font-weight: 700; }
+
+.workload-viz {
+    display: flex; align-items: center; gap: 16px; padding: 14px 16px;
+    border-top: 1px dashed #e0e0e0; background: #fafafa;
+}
+.workload-viz-label {
+    font-size: 13px; font-weight: 700; color: #888; white-space: nowrap;
+    min-width: 56px;
+}
+.workload-blocks {
+    display: flex; gap: 4px; align-items: center;
+}
+.workload-block {
+    width: 28px; height: 28px; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; color: #fff;
+}
+.workload-block.human { background: #ef5350; }
+.workload-block.ai { background: #42a5f5; }
+.workload-arrow {
+    font-size: 20px; color: #ff9800; font-weight: 700;
+    margin: 0 4px;
+}
+.workload-save {
+    font-size: 18px; font-weight: 800; color: #2e7d32;
+    margin-left: auto; white-space: nowrap;
+}
+.workload-save span { font-size: 12px; font-weight: 500; color: #888; }
+
+/* ---- Testing section ---- */
+.test-body { padding: 24px 40px 36px; }
+.test-overview { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 28px; }
+.test-stat-card {
+    flex: 1; min-width: 180px; border-radius: 10px;
+    padding: 20px 24px; text-align: center; color: #fff;
+}
+.test-stat-card.green { background: linear-gradient(135deg, #43a047, #66bb6a); }
+.test-stat-card.orange { background: linear-gradient(135deg, #ef6c00, #ff9800); }
+.test-stat-card.red { background: linear-gradient(135deg, #c62828, #e53935); }
+.test-stat-card.blue { background: linear-gradient(135deg, #1565c0, #2196f3); }
+.test-stat-card .big { font-size: 42px; font-weight: 800; }
+.test-stat-card .lbl { font-size: 14px; opacity: 0.9; margin-top: 4px; }
+
+.test-table-wrap { overflow-x: auto; margin-bottom: 20px; }
+.test-table {
+    width: 100%; border-collapse: collapse; font-size: 14px;
+}
+.test-table th {
+    background: #263238; color: #eceff1; padding: 10px 14px;
+    font-weight: 600; text-align: center; font-size: 13px;
+}
+.test-table td {
+    padding: 10px 14px; border-bottom: 1px solid #e8ecf1; text-align: center;
+    vertical-align: middle;
+}
+.test-table tr:nth-child(even) td { background: #fafbfc; }
+.test-table .match { color: #2e7d32; font-weight: 700; }
+.test-table .mismatch { color: #c62828; font-weight: 700; }
+.test-table .warn { color: #e65100; font-weight: 700; }
+.test-table .tag-cell {
+    display: inline-block; padding: 3px 10px; border-radius: 10px;
+    font-size: 12px; font-weight: 700;
+}
+.tag-pass { background: #e8f5e9; color: #2e7d32; }
+.tag-miss { background: #fce4ec; color: #c62828; }
+.tag-false { background: #fff3e0; color: #e65100; }
+
+.test-issues { margin-top: 24px; }
+.test-issues h3 {
+    font-size: 17px; font-weight: 700; color: #37474f; margin-bottom: 16px;
+    padding-left: 12px; border-left: 4px solid #e91e63;
+}
+.issue-grid { display: flex; gap: 20px; flex-wrap: wrap; }
+.issue-card {
+    flex: 1; min-width: 280px; border: 1px solid #e0e0e0;
+    border-radius: 8px; padding: 16px 20px;
+}
+.issue-card h4 {
+    font-size: 15px; font-weight: 700; color: #37474f; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+}
+.issue-card h4 .dot { width: 10px; height: 10px; border-radius: 50%; }
+.issue-card h4 .dot.bank { background: #2196f3; }
+.issue-card h4 .dot.addr { background: #ff9800; }
+.issue-item {
+    font-size: 14px; color: #555; padding: 6px 0;
+    border-bottom: 1px solid #f5f5f5; line-height: 1.6;
+}
+.issue-item:last-child { border-bottom: none; }
+.issue-item .pct {
+    display: inline-block; padding: 2px 7px; border-radius: 4px;
+    font-size: 12px; font-weight: 700; margin-left: 6px;
+}
+.issue-item .pct.low { background: #fce4ec; color: #c62828; }
+.issue-item .pct.mid { background: #fff3e0; color: #e65100; }
+.issue-item .pct.ok { background: #e8f5e9; color: #2e7d32; }
+
+/* ---- Demo section ---- */
+.demo-body { padding: 24px 40px 36px; }
+.demo-card {
+    background: #fff; border: 1px solid #e0e0e0; border-radius: 8px;
+    padding: 20px 24px; margin-bottom: 16px; transition: box-shadow .15s;
+}
+.demo-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.demo-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.demo-card-header h3 { font-size: 17px; font-weight: 700; color: #111; margin: 0; }
+.demo-chip {
+    display: inline-block; padding: 3px 10px; border-radius: 12px;
+    font-size: 13px; font-weight: 700; white-space: nowrap;
+}
+.demo-chip.live { background: #e8f5e9; color: #2e7d32; }
+.demo-chip.upcoming { background: #e3f2fd; color: #1565c0; }
+.demo-chip.test { background: #fff3e0; color: #e65100; }
+.demo-chip.used { background: #e3f2fd; color: #1565c0; }
+.demo-chip.dev { background: #f3e5f5; color: #7b1fa2; }
+.demo-card-body { display: flex; gap: 28px; align-items: flex-start; }
+.demo-card-text { flex: 1.2; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.demo-card-media { flex: 0.8; min-width: 300px; display: flex; flex-direction: column; gap: 10px; }
+.demo-desc { margin-bottom: 2px; }
+.demo-desc .label {
+    font-size: 14px; font-weight: 700; color: #1565c0; margin-bottom: 3px;
+}
+.demo-desc .value { font-size: 15px; color: #444; line-height: 1.8; }
+.demo-media-img {
+    width: 100%; max-width: 720px; border-radius: 6px; border: 1px solid #e0e0e0;
+    cursor: pointer; transition: transform .15s;
+}
+.demo-media-img:hover { transform: scale(1.02); }
+.demo-media-video {
+    width: 100%; max-width: 720px; border-radius: 6px; border: 1px solid #e0e0e0;
+    background: #1a1a2e; outline: none;
+}
+.demo-media-tabs {
+    display: flex; gap: 4px; margin-bottom: 4px;
+}
+.demo-media-tab {
+    padding: 5px 14px; border: 1px solid #d0d0d0; border-radius: 14px;
+    background: #fff; font-size: 13px; color: #666; cursor: pointer;
+    transition: all .15s;
+}
+.demo-media-tab.active {
+    background: #2196f3; border-color: #2196f3; color: #fff;
+}
+.demo-media-tab:hover { border-color: #2196f3; color: #2196f3; }
+.demo-media-tab.active:hover { color: #fff; }
+.demo-video-placeholder {
+    width: 100%; max-width: 720px; aspect-ratio: 16/10; border-radius: 6px;
+    border: 1px dashed #c0c0c0; background: #fafafa;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; color: #aaa; font-size: 14px; gap: 6px;
+}
+.demo-video-placeholder .icon { font-size: 32px; }
+.demo-img-modal {
+    display: none; position: fixed; z-index: 9999; top: 0; left: 0;
+    width: 100%; height: 100%; background: rgba(0,0,0,.85);
+    justify-content: center; align-items: center; cursor: pointer;
+}
+.demo-img-modal.show { display: flex; }
+.demo-img-modal img { max-width: 92%; max-height: 92%; border-radius: 6px; box-shadow: 0 8px 32px rgba(0,0,0,.3); }
+
+/* System mockup */
+.sys-shell {
+    display: flex; gap: 0; border: 1px solid #e0e0e0; border-radius: 8px;
+    overflow: hidden; min-height: 520px; background: #fff;
+}
+.sys-sidebar {
+    width: 200px; background: #263238; display: flex; flex-direction: column;
+    flex-shrink: 0; user-select: none;
+}
+.sys-sidebar-header {
+    padding: 16px; color: #eceff1; font-size: 13px; font-weight: 700;
+    border-bottom: 1px solid #37474f; letter-spacing: .5px;
+}
+.sys-nav-item {
+    padding: 14px 16px; color: #90a4ae; font-size: 13px; cursor: pointer;
+    border-left: 3px solid transparent; transition: all .15s;
+    display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #37474f;
+}
+.sys-nav-item:hover { background: #37474f; color: #fff; }
+.sys-nav-item.active {
+    background: #1565c0; color: #fff; border-left-color: #64b5f6;
+    font-weight: 600;
+}
+.sys-nav-item .nav-icon { font-size: 17px; width: 24px; text-align: center; flex-shrink: 0; }
+.sys-nav-item .nav-label { flex: 1; }
+.sys-nav-item .nav-chip {
+    font-size: 10px; padding: 2px 7px; border-radius: 8px; font-weight: 600;
+    white-space: nowrap; flex-shrink: 0;
+}
+.sys-nav-item .nav-chip.test { background: rgba(255,152,0,.25); color: #ffb74d; }
+.sys-nav-item .nav-chip.dev { background: rgba(206,147,216,.25); color: #ce93d8; }
+.sys-nav-item .nav-chip.used { background: rgba(100,181,246,.25); color: #90caf9; }
+.sys-content { flex: 1; padding: 28px 32px; overflow-y: auto; display: flex; flex-direction: column; }
+.sys-content-panel { display: none; flex: 1; }
+.sys-content-panel.active { display: flex; flex-direction: column; gap: 16px; }
+.sys-content-panel .panel-header { display: flex; align-items: center; gap: 12px; }
+.sys-content-panel .panel-header h4 { font-size: 17px; font-weight: 700; color: #111; }
+.sys-content-panel .panel-body { display: flex; gap: 24px; flex: 1; }
+.sys-content-panel .panel-text { flex: 1.1; display: flex; flex-direction: column; gap: 14px; }
+.sys-content-panel .panel-media { flex: 0.9; min-width: 260px; display: flex; flex-direction: column; gap: 10px; }
+
+.demo-matrix-table {
+    width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 4px;
+}
+.demo-matrix-table th {
+    background: #263238; color: #eceff1; padding: 8px 10px; font-weight: 600;
+    text-align: center; font-size: 12px;
+}
+.demo-matrix-table td {
+    padding: 8px 10px; border-bottom: 1px solid #e8ecf1; text-align: center;
+    vertical-align: middle; line-height: 1.5;
+}
+.demo-matrix-table tr:nth-child(even) td { background: #fafbfc; }
+.demo-matrix-table .jurisdiction {
+    font-weight: 700; color: #263238; text-align: left; white-space: nowrap;
+    background: #f5f5f5; font-size: 13px;
+}
+.demo-matrix-table .jurisdiction.hk { border-left: 3px solid #e53935; }
+.demo-matrix-table .jurisdiction.sg { border-left: 3px solid #ff9800; }
+.demo-matrix-table .jurisdiction.bvi { border-left: 3px solid #2196f3; }
+.demo-matrix-table .jurisdiction.ky { border-left: 3px solid #7b1fa2; }
+.demo-matrix-table .cell-key {
+    display: block; font-weight: 700; font-size: 11px; color: #1565c0;
+}
+.demo-matrix-table .cell-desc {
+    display: block; font-size: 11px; color: #888; margin-top: 1px;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+    .sys-shell { flex-direction: column; min-height: auto; }
+    .sys-sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
+    .sys-sidebar-header { display: none; }
+    .sys-nav-item { border-left: none; border-bottom: 3px solid transparent; padding: 10px 14px; white-space: nowrap; }
+    .sys-nav-item.active { border-left: none; border-bottom-color: #64b5f6; }
+    .sys-content-panel .panel-body { flex-direction: column; }
+    .sys-content-panel .panel-media { min-width: 0; }
+}
+@media (max-width: 760px) {
+    .demo-card-body { flex-direction: column; }
+    .demo-card-media { min-width: 0; }
+    .bg-body { flex-direction: column; }
+    .org-branches { flex-direction: column; gap: 20px; }
+    .org-bridge { flex-direction: column; }
+    .org-bridge-bar { width: 5px; height: 16px; }
+    .org-bridge-dot { margin: -2px 0; }
+}
+
+/* Print */
+@media print {
+    @page { size: A3 landscape; margin: 8mm; }
+    body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    /* Hide all interactive / irrelevant elements */
+    .topnav, video, .sys-sidebar, .demo-media-tabs, .today-line,
+    #tooltip, .toggle-btn, .demo-img-modal, .sys-nav-item,
+    .demo-chip, .nav-chip, .nav-icon, .demo-media-tab { display: none !important; }
+
+    /* Show all hidden content panels */
+    .sys-content-panel { display: block !important; margin-bottom: 28px; padding-bottom: 18px; border-bottom: 1px dashed #bbb; }
+    .sys-content-panel:last-child { border-bottom: none; margin-bottom: 0; }
+    .demo-media-panel[data-panel="vid"] { display: none !important; }
+    .demo-media-panel[data-panel="img"] { display: block !important; }
+    .gantt-row.hidden { display: flex !important; }
+
+    /* Page breaks — each major section on new page */
+    .section { box-shadow: none; border-radius: 0; max-width: 100%; margin: 0 0 6px; }
+    .cover { min-height: auto; padding: 80px 48px 60px; page-break-after: always; }
+    #bg  { page-break-before: always; }
+    #req { page-break-before: always; }
+    #plan{ page-break-before: always; }
+    #test{ page-break-before: always; }
+    #demo{ page-break-before: always; }
+
+    /* Section headers */
+    .sec-header { padding: 14px 28px; }
+    .sec-header h2 { font-size: 20px; }
+
+    /* Gantt chart */
+    .gantt-wrap { padding: 10px 20px 14px; }
+    .gantt-row { min-height: 26px; }
+    .chart-row { height: 26px; }
+    .gantt-bar { height: 18px; top: 4px; }
+    .phase .gantt-bar { height: 20px; top: 3px; }
+    .left-panel { border-right-color: #999; }
+    .col-label { width: 260px; }
+    .col-owner { width: 60px; }
+    .col-days { width: 36px; }
+    .col-status { width: 50px; }
+    .col-dates { width: 115px; }
+    .milestone-left { width: 521px; }
+    .milestone-wrap { gap: 4px; }
+
+    /* System mockup */
+    .sys-shell { min-height: auto; border: none; flex-direction: column !important; }
+    .sys-content { flex: 1; }
+    .panel-body { flex-direction: column; }
+    .panel-media { min-width: 0; }
+
+    /* Demo cards */
+    .demo-card { page-break-inside: avoid; }
+    .demo-card-body { flex-direction: column; }
+    .demo-card-media { min-width: 0; }
+    .demo-media-img { max-width: 100%; }
+
+    /* Cover */
+    .cover h1 { font-size: 36px; }
+    .cover .role { font-size: 18px; }
+    .cover .meta { font-size: 15px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ====== Top Nav ====== -->
+<nav class="topnav" id="topnav">
+    <a href="#cover" class="active">封面</a>
+    <a href="#bg">自我介绍</a>
+    <a href="#req">需求分析</a>
+    <a href="#plan">项目管理</a>
+    <a href="#test">系统测试</a>
+    <a href="#demo">成果演示</a>
+</nav>
+
+<!-- ====== 1. Cover ====== -->
+<div class="section" id="cover">
+    <div class="cover">
+        <h1>AI 自动化项目汇报</h1>
+        <div class="role">汇报人：俞沁 Erin &nbsp;|&nbsp; BMO 中后台系统 AI 自动化</div>
+        <div class="meta">
+            <span>汇报日期：2026年7月29日</span>
+            <span>当前阶段：系统测试 & 上线部署</span>
+        </div>
+    </div>
+</div>
+
+<!-- ====== 2. Self Introduction ====== -->
+<div class="section" id="bg">
+    <div class="sec-header">
+        <span class="num">1</span>
+        <h2>自我介绍</h2>
+    </div>
+    <div class="bg-body">
+        <div class="bg-card">
+            <h3>个人简介</h3>
+            <div class="goal">
+                来自浙江杭州。<br>
+                研究生：香港中文大学 信息科学与技术管理<br>
+                本科：湖南大学 会计学<br><br>
+                会计学的严谨性训练 + 信息技术工具运用能力，<br>
+                目前在广发证券香港运营部实习，<br>
+                协同 IT 部门与运营部门推进中后台系统 AI 自动化项目。
+            </div>
+        </div>
+        <div class="bg-card">
+            <h3>协作团队</h3>
+            <div class="org-chart">
+                <div class="org-branches">
+                    <div class="org-branch">
+                        <div class="org-branch-label">业务侧</div>
+                        <div class="org-row">
+                            <div class="org-leaf biz">Jeffrey<br><small>开户团队负责人</small></div>
+                        </div>
+                        <div class="org-row" style="margin-top:6px;">
+                            <div class="org-leaf biz-member">Siena<br><small>BMO审核 / 个人开户</small></div>
+                            <div class="org-leaf biz-member">Cheryl<br><small>公司开户</small></div>
+                        </div>
+                    </div>
+                    <div class="org-bridge">
+                        <div class="org-bridge-bar"></div>
+                        <div class="org-bridge-dot"></div>
+                    </div>
+                    <div class="org-node erin">俞沁 Erin<br><small>项目管理 / 需求 / 测试</small></div>
+                    <div class="org-bridge">
+                        <div class="org-bridge-dot"></div>
+                        <div class="org-bridge-bar"></div>
+                    </div>
+                    <div class="org-branch">
+                        <div class="org-branch-label">IT 侧</div>
+                        <div class="org-row">
+                            <div class="org-leaf it-lead">Mandy<br><small>IT 研发负责人</small></div>
+                        </div>
+                        <div class="org-row" style="margin-top:6px;">
+                            <div class="org-leaf it-member">徐驰</div>
+                            <div class="org-leaf it-member">程明</div>
+                            <small style="color:#888;font-size:11px;align-self:center;">IT 产品</small>
+                        </div>
+                        <div class="org-row" style="margin-top:6px;">
+                            <div class="org-leaf it-member">黄勇</div>
+                            <div class="org-leaf it-member">万明栋</div>
+                            <small style="color:#888;font-size:11px;align-self:center;">IT 开发</small>
+                        </div>
+                        <div class="org-row" style="margin-top:6px;">
+                            <div class="org-leaf it-member">谭登军</div>
+                            <div class="org-leaf it-member">葛雪琴</div>
+                            <small style="color:#888;font-size:11px;align-self:center;">IT 测试</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ====== 3. Requirements Analysis ====== -->
+<div class="section" id="req">
+    <div class="sec-header">
+        <span class="num">2</span>
+        <h2>需求分析</h2>
+    </div>
+    <div class="req-body">
+
+        <!-- BMO flow + Account opening flows -->
+        <div class="req-grid">
+            <div class="flow-card">
+                <h3>1. 场景 A+B：BMO 信息修改流程</h3>
+                <div class="flow-body">
+                    <div style="font-size:13px;color:#888;margin-bottom:12px;line-height:1.6;">
+                        BMO 是维护客户个人资料的中后台系统。客户从客户端发起信息修改，进入 BMO 系统审核，<br>审核结果为<strong>通过</strong>或<strong>终止</strong>，常规审批流程需 <strong>2-3 天</strong>。
+                    </div>
+                    <div class="flow-steps">
+                        <div class="flow-step s1">客户修改信息<br>+提交证明文件</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-step s2" style="background:#fff9c4;color:#f57f17;">BMO 系统审核</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-step s3">通过</div>
+                        <span style="font-size:13px;color:#888;margin:0 8px;">/</span>
+                        <div class="flow-step s5">终止</div>
+                    </div>
+                    <div style="margin-top:16px;padding:12px;background:#fff3e0;border-radius:6px;font-size:13px;color:#e65100;line-height:1.6;">
+                        <strong>痛点：</strong>人工比对证明文件和客户填写的申请信息，流程重复机械、数量多。
+                    </div>
+                    <div style="margin-top:12px;padding:12px;background:#e3f2fd;border-radius:6px;font-size:13px;color:#1565c0;line-height:1.6;">
+                        <strong>优化方案：</strong>在人工审核前增加 <strong>AI 预审</strong>，自动完成文件有无 + 信息完整性核查，为人工审核提供参考，加速审批流程。
+                    </div>
+                </div>
+            </div>
+            <div class="flow-card">
+                <h3>2. 场景 C：开户审核流程</h3>
+                <div class="flow-body">
+                    <div style="font-size:13px;color:#888;margin-bottom:12px;line-height:1.6;">
+                        常规开户审批需 <strong>3-4 天</strong>，经常因资料缺失或有误，需与 CS 团队反复沟通、让 CS 向客户重新收集，沟通成本大。
+                    </div>
+                    <div class="flow-steps" style="padding-bottom:90px;">
+                        <div class="flow-step s1">客户提交开户资料</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-step s2">CS 收集</div>
+                        <span class="flow-arrow">→</span>
+                        <div style="position:relative;display:flex;flex-direction:column;align-items:center;">
+                            <div class="flow-step s3" style="background:#fff9c4;color:#f57f17;">运营团队复审</div>
+                            <div style="position:absolute;top:100%;left:50%;transform:translateX(-50%);padding-top:2px;">
+                                <div style="width:2px;height:8px;background:#bdbdbd;margin:0 auto;"></div>
+                                <div style="display:flex;align-items:flex-start;">
+                                    <div style="display:flex;flex-direction:column;align-items:center;">
+                                        <div style="width:2px;height:8px;background:#bdbdbd;"></div>
+                                        <div style="padding:8px 14px;border-radius:6px;font-size:13px;background:#fffde7;color:#f57f17;font-weight:600;white-space:nowrap;">
+                                            见证人持牌证明
+                                            <br><small style="font-weight:400;color:#f9a825;">SFC 证监会网站搜索</small>
+                                        </div>
+                                    </div>
+                                    <div style="width:28px;border-top:2px solid #bdbdbd;margin-top:4px;"></div>
+                                    <div style="display:flex;flex-direction:column;align-items:center;">
+                                        <div style="width:2px;height:8px;background:#bdbdbd;"></div>
+                                        <div style="padding:8px 14px;border-radius:6px;font-size:13px;background:#fffde7;color:#f57f17;font-weight:600;white-space:nowrap;">
+                                            反洗钱风险调查
+                                            <br><small style="font-weight:400;color:#f9a825;">Pythagoras 系统筛查</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-step s4">通过录入系统</div>
+                    </div>
+                    <div style="margin-top:16px;padding:12px;background:#fff3e0;border-radius:6px;font-size:13px;color:#e65100;line-height:1.6;">
+                        <strong>痛点 1：</strong>资料不全或有误，需退回 CS 反复沟通，流程冗长。
+                        <br><strong>痛点 2：</strong>复审需跨多平台搜集资料，SFC 搜索持牌 + Pythagoras 筛查反洗钱，操作繁琐。
+                    </div>
+                    <div style="margin-top:12px;padding:12px;background:#e3f2fd;border-radius:6px;font-size:13px;color:#1565c0;line-height:1.6;">
+                        <strong>优化方案：</strong><strong>AI 预审</strong>自动检查资料完整性，提前发现缺失项，减少与 CS 的反复沟通。同时将 SFC 持牌查询、Pythagoras 名字筛查整合至<strong>一站式</strong>平台，完成复审资料搜集。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ====== 4. Project Management (Gantt) ====== -->
+<div class="section" id="plan">
+    <div class="sec-header">
+        <span class="num">3</span>
+        <h2>项目管理</h2>
+    </div>
+    <div class="gantt-wrap">
+        <div class="gantt-summary-line">
+            按 <strong>7 阶段标准流程</strong> 严格推进，关键节点全部按时完成。
+            需求评审 → 开发 → SIT/UAT → 验收 → 上线，各阶段里程碑均无延期。
+        </div>
+        <div class="filter-bar" style="margin-bottom:12px;">
+            <div class="legend">
+                <span style="font-size:12px;color:#888;">状态:</span>
+                <div class="legend-item"><div class="legend-dot done"></div>已完成</div>
+                <div class="legend-item"><div class="legend-dot progress"></div>进行中</div>
+                <div class="legend-item"><div class="legend-dot pending"></div>未开始</div>
+                <div style="width:20px;"></div>
+                <div class="legend-item"><div class="legend-dot milestone"></div>里程碑</div>
+            </div>
+        </div>
+        <div class="gantt-table" id="ganttTable"></div>
+        <div class="summary-section" id="summarySection"></div>
+    </div>
+</div>
+
+<!-- ====== 5. System Testing ====== -->
+<div class="section" id="test">
+    <div class="sec-header">
+        <span class="num">4</span>
+        <h2>系统测试</h2>
+    </div>
+    <div class="test-body">
+
+        <!-- Key stats -->
+        <div class="test-overview">
+            <div class="test-stat-card green">
+                <div class="big">32</div>
+                <div class="lbl">场景A银行信息测试案例总数</div>
+            </div>
+            <div class="test-stat-card blue">
+                <div class="big">84.4%</div>
+                <div class="lbl">AI 与人工判断一致率</div>
+            </div>
+            <div class="test-stat-card orange">
+                <div class="big">5</div>
+                <div class="lbl">误判案例（AI 拦截但人工通过）</div>
+            </div>
+            <div class="test-stat-card red">
+                <div class="big">0</div>
+                <div class="lbl">漏判案例（AI 通过但人工发现异常）</div>
+            </div>
+        </div>
+
+        <!-- Test result table -->
+        <div class="test-table-wrap">
+            <table class="test-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>AI 处理状态</th>
+                        <th>AI 预审结果</th>
+                        <th>人工复核结果</th>
+                        <th>判断</th>
+                        <th>含义</th>
+                        <th>处理建议</th>
+                        <th>案例数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>完成</td><td>预审通过</td><td>通过</td>
+                        <td class="match">✓ 一致</td>
+                        <td>AI 和人判断相同，预审有效</td>
+                        <td>人工快速复核即可</td>
+                        <td>7</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>完成</td><td>预审通过</td><td>不通过</td>
+                        <td class="mismatch">✗ 漏判</td>
+                        <td>AI 放行了但人工发现问题 — <strong>合规风险</strong></td>
+                        <td>必须排查 AI 未识别原因</td>
+                        <td><strong>0</strong></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>完成</td><td>不通过</td><td>通过</td>
+                        <td class="warn">✗ 误判</td>
+                        <td>AI 拦截了但人工判断没问题</td>
+                        <td>优化规则，减少误报（非紧急）</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>完成</td><td>不通过</td><td>不通过</td>
+                        <td class="match">✓ 一致</td>
+                        <td>AI 和人判断相同，AI 正确标出风险</td>
+                        <td>人工重点复核 AI 标记的问题项</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>失败</td><td>—</td><td>待人工</td>
+                        <td class="warn">⚠ 异常</td>
+                        <td>AI 处理失败，未产出预审结果</td>
+                        <td>失败后重新审核直到成功</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>处理中</td><td>—</td><td>待定</td>
+                        <td>⏳ 等待</td>
+                        <td>AI 还在处理中，结果未出</td>
+                        <td>等待完成后再归类</td>
+                        <td>—</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<!-- ====== 6. Demo Sharing ====== -->
+<div class="section" id="demo">
+    <div class="sec-header">
+        <span class="num">5</span>
+        <h2>成果演示</h2>
+    </div>
+    <div class="demo-body">
+
+        <!-- 场景 A+B -->
+        <div class="demo-card">
+            <div class="demo-card-header">
+                <h3>场景 A+B：BMO AI 预审</h3>
+                <span class="demo-chip upcoming">7.30 即将上线</span>
+            </div>
+            <div class="demo-card-body">
+                <div class="demo-card-text">
+                    <div class="demo-desc">
+                        <span class="label">需求描述</span>
+                        <div class="value">客户在易淘金发起信息修改流程并提交凭证（图片）后，OCR 识别图片内容，利用 AI 对识别内容给出初步预审判断，以便人工参考。</div>
+                    </div>
+                    <div class="demo-desc">
+                        <span class="label">技术及实现</span>
+                        <div class="value">调用总部千问大模型 API。</div>
+                    </div>
+                    <div class="demo-desc">
+                        <span class="label">价值与效果</span>
+                        <div class="value">替代人工逐字核实，缩减单笔工单审核耗时；加速审批流转，提升线上客户满意度。</div>
+                    </div>
+                </div>
+                <div class="demo-card-media">
+                    <div class="demo-media-tabs">
+                        <span class="demo-media-tab active" onclick="switchMedia(this, 'img')">截图</span>
+                        <span class="demo-media-tab" onclick="switchMedia(this, 'vid')">演示视频</span>
+                    </div>
+                    <div class="demo-media-panel" data-panel="img">
+                        <img class="demo-media-img" src="demo_images/image1.png" alt="AI预审界面" onclick="openImg(this.src)" />
+                    </div>
+                    <div class="demo-media-panel" data-panel="vid" style="display:none;">
+                        <video class="demo-media-video" controls data-src="demo_videos/bank_info_change.mp4" preload="none"></video>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 场景 C -->
+        <div class="demo-card">
+            <div class="demo-card-header">
+                <h3>场景 C：开户审核 AI预审</h3>
+                <span class="demo-chip test">测试优化中</span>
+            </div>
+            <div class="sys-shell" style="margin-top:12px;">
+                <div class="sys-sidebar">
+                    <div class="sys-sidebar-header">功能模块</div>
+                    <div class="sys-nav-item active" onclick="switchFeature(this, 'ind-audit')">
+                        <span class="nav-icon">1</span>
+                        <span class="nav-label">个人开户审核</span>
+                        <span class="nav-chip test">测试中</span>
+                    </div>
+                    <div class="sys-nav-item" onclick="switchFeature(this, 'sfc-lookup')">
+                        <span class="nav-icon">2</span>
+                        <span class="nav-label">SFC 持牌查询</span>
+                        <span class="nav-chip used">已使用</span>
+                    </div>
+                    <div class="sys-nav-item" onclick="switchFeature(this, 'pythagoras')">
+                        <span class="nav-icon">3</span>
+                        <span class="nav-label">名字筛查</span>
+                        <span class="nav-chip test">测试中</span>
+                    </div>
+                </div>
+                <div class="sys-content">
+                    <div class="sys-content-panel active" data-feature="ind-audit">
+                        <div class="panel-header"><h4>个人开户文件审核</h4><span class="demo-chip test">测试中</span></div>
+                        <div class="panel-body">
+                            <div class="panel-text">
+                                <div class="demo-desc">
+                                    <span class="label">需求描述</span>
+                                    <div class="value">客户提交开户表格和证明文件，AI 先做预审判断文件是否完整合规，逐项输出 12 项 checklist 结果。</div>
+                                </div>
+                                <div class="demo-desc">
+                                    <span class="label">技术及实现</span>
+                                    <div class="value">OCR 识别 + Python 本地脚本，Windows 本地 OCR 引擎确保数据不出本机。</div>
+                                </div>
+                                <div class="demo-desc">
+                                    <span class="label">价值与效果</span>
+                                    <div class="value">12 项 checklist 逐条自动核对，结果结构化为 TXT/JSON 报告，减轻人工审阅负担。</div>
+                                </div>
+                            </div>
+                            <div class="panel-media">
+                                <div class="demo-media-tabs">
+                                    <span class="demo-media-tab active" onclick="switchMedia(this, 'img')">截图</span>
+                                    <span class="demo-media-tab" onclick="switchMedia(this, 'vid')">演示视频</span>
+                                </div>
+                                <div class="demo-media-panel" data-panel="img">
+                                    <img class="demo-media-img" src="demo_images/image3.png" alt="KYC审核" onclick="openImg(this.src)" />
+                                </div>
+                                <div class="demo-media-panel" data-panel="vid" style="display:none;">
+                                    <video class="demo-media-video" controls data-src="demo_videos/individual_kyc.mp4" preload="none"></video>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sys-content-panel" data-feature="sfc-lookup">
+                        <div class="panel-header"><h4>SFC 持牌人查询 & 证明批量下载</h4><span class="demo-chip used">同事已使用</span></div>
+                        <div class="panel-body">
+                            <div class="panel-text">
+                                <div class="demo-desc"><span class="label">需求描述</span><div class="value">根据 CE 编号批量在 SFC 证监会网站查找对应公司持牌信息，输出查找报告，同时实现批量下载持牌证明。</div></div>
+                                <div class="demo-desc"><span class="label">技术及实现</span><div class="value">Python 脚本爬取 SFC 网站数据。</div></div>
+                                <div class="demo-desc"><span class="label">价值与效果</span><div class="value">替代人工逐个搜索下载，查找 74 家公司仅需三分钟。</div></div>
+                            </div>
+                            <div class="panel-media">
+                                <div class="demo-media-tabs">
+                                    <span class="demo-media-tab active" onclick="switchMedia(this, 'img')">截图</span>
+                                    <span class="demo-media-tab" onclick="switchMedia(this, 'vid')">演示视频</span>
+                                </div>
+                                <div class="demo-media-panel" data-panel="img">
+                                    <img class="demo-media-img" src="demo_images/image4.png" alt="SFC查询" onclick="openImg(this.src)" />
+                                </div>
+                                <div class="demo-media-panel" data-panel="vid" style="display:none;">
+                                    <video class="demo-media-video" controls data-src="demo_videos/SFC.mp4" preload="none"></video>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sys-content-panel" data-feature="pythagoras">
+                        <div class="panel-header"><h4>Pythagoras 名字筛查</h4><span class="demo-chip test">测试优化中</span></div>
+                        <div class="panel-body">
+                            <div class="panel-text">
+                                <div class="demo-desc"><span class="label">需求描述</span><div class="value">搜索客户姓名，在 Pythagoras 系统上筛查反洗钱风险并生成报告。后续将开发批量筛查功能。</div></div>
+                                <div class="demo-desc"><span class="label">技术及实现</span><div class="value">Python 脚本接入 Pythagoras 系统 API 进行数据筛查。</div></div>
+                                <div class="demo-desc"><span class="label">价值与效果</span><div class="value">把 SFC / Pythagoras 等检索工作集合在一个平台，提升工作效率。</div></div>
+                            </div>
+                            <div class="panel-media">
+                                <div class="demo-media-tabs">
+                                    <span class="demo-media-tab active" onclick="switchMedia(this, 'img')">截图</span>
+                                    <span class="demo-media-tab" onclick="switchMedia(this, 'vid')">演示视频</span>
+                                </div>
+                                <div class="demo-media-panel" data-panel="img">
+                                    <img class="demo-media-img" src="demo_images/image5.png" alt="Pythagoras" onclick="openImg(this.src)" />
+                                </div>
+                                <div class="demo-media-panel" data-panel="vid" style="display:none;">
+                                    <video class="demo-media-video" controls data-src="demo_videos/pythagoras.mp4" preload="none"></video>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Company account matrix -->
+        <div class="demo-card">
+            <div class="demo-card-header">
+                <h3>公司开户 — 客户类型矩阵</h3>
+                <span class="demo-chip dev">需求梳理中</span>
+            </div>
+            <div class="demo-desc" style="margin-bottom:12px;">
+                <span class="label">矩阵概览 — 35 种公司客户类型 × 文件需求清单</span>
+                <span onclick="window.open('customer_type_matrix.xlsx','_blank')" style="font-weight:400;font-size:12px;color:#1565c0;text-decoration:underline;cursor:pointer;margin-left:12px;">打开完整矩阵</span>
+            </div>
+            <table class="demo-matrix-table">
+                <thead>
+                    <tr><th>辖区</th><th>金融机构</th><th>上市公司</th><th>非上市有限公司</th><th>基金</th><th>合伙</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="jurisdiction hk">香港</td><td><span class="cell-key">HK_FI</span><span class="cell-desc">CI+BR+机构包</span></td><td><span class="cell-key">HK_LISTED</span><span class="cell-desc">CI+BR+上市证明</span></td><td><span class="cell-key">HK_NONFI</span><span class="cell-desc">CI+BR+全套</span></td><td><span class="cell-key">HK_FUND</span><span class="cell-desc">CI+BR+基金文件包</span></td><td><span class="cell-key">HK_PART</span><span class="cell-desc">合伙协议+GP/LP</span></td></tr>
+                    <tr><td class="jurisdiction sg">新加坡</td><td><span class="cell-key">SG_FI</span><span class="cell-desc">BizFile+机构包</span></td><td><span class="cell-key">SG_LISTED</span><span class="cell-desc">BizFile+上市证明</span></td><td><span class="cell-key">SG_NONFI</span><span class="cell-desc">BizFile+全套</span></td><td><span class="cell-key">SG_FUND</span><span class="cell-desc">BizFile+基金文件包</span></td><td><span class="cell-key">SG_PART</span><span class="cell-desc">合伙协议+GP/LP</span></td></tr>
+                    <tr><td class="jurisdiction bvi">BVI</td><td><span class="cell-key">BVI_FI</span><span class="cell-desc">CI/COI+机构包</span></td><td><span class="cell-key">BVI_LISTED</span><span class="cell-desc">CI/COI+上市证明</span></td><td><span class="cell-key">BVI_NONFI</span><span class="cell-desc">CI/COI+全套</span></td><td><span class="cell-key">BVI_FUND</span><span class="cell-desc">CI/COI+基金文件包</span></td><td><span class="cell-key">BVI_PART</span><span class="cell-desc">合伙协议+GP/LP</span></td></tr>
+                    <tr><td class="jurisdiction ky">开曼</td><td><span class="cell-key">KY_FI</span><span class="cell-desc">CI/COI+机构包</span></td><td><span class="cell-key">KY_LISTED</span><span class="cell-desc">CI/COI+上市证明</span></td><td><span class="cell-key">KY_NONFI</span><span class="cell-desc">CI/COI+全套</span></td><td><span class="cell-key">KY_FUND</span><span class="cell-desc">CI/COI+基金文件包</span></td><td><span class="cell-key">KY_PART</span><span class="cell-desc">合伙协议+GP/LP</span></td></tr>
+                    <tr><td class="jurisdiction" style="font-weight:700;color:#263238;text-align:left;white-space:nowrap;background:#f5f5f5;font-size:13px;border-left:3px solid #e91e63;">英国</td><td><span class="cell-key">UK_FI</span><span class="cell-desc">CoI+机构包</span></td><td><span class="cell-key">UK_LISTED</span><span class="cell-desc">CoI+上市证明</span></td><td><span class="cell-key">UK_NONFI</span><span class="cell-desc">CoI+全套</span></td><td><span class="cell-key">UK_FUND</span><span class="cell-desc">CoI+基金文件包</span></td><td><span class="cell-key">UK_PART</span><span class="cell-desc">合伙协议+GP/LP</span></td></tr>
+                    <tr><td class="jurisdiction" style="font-weight:700;color:#263238;text-align:left;white-space:nowrap;background:#f5f5f5;font-size:13px;border-left:3px solid #c62828;">中国内地</td><td><span class="cell-key">CN_FI</span><span class="cell-desc">营业执照+机构包</span></td><td><span class="cell-key">CN_LISTED</span><span class="cell-desc">营业执照+上市证明</span></td><td><span class="cell-key">CN_NONFI</span><span class="cell-desc">营业执照+全套</span></td><td><span class="cell-key">CN_FUND</span><span class="cell-desc">营业执照+基金文件包</span></td><td><span class="cell-key">CN_PART</span><span class="cell-desc">合伙协议+GP/LP</span></td></tr>
+                    <tr><td class="jurisdiction" style="font-weight:700;color:#263238;text-align:left;white-space:nowrap;background:#f5f5f5;font-size:13px;border-left:3px solid #00897b;">中国台湾</td><td><span class="cell-key">TW_FI</span><span class="cell-desc">公司登记+机构包</span></td><td><span class="cell-key">TW_LISTED</span><span class="cell-desc">公司登记+上市证明</span></td><td><span class="cell-key">TW_NONFI</span><span class="cell-desc">公司登记+全套</span></td><td><span class="cell-key">TW_FUND</span><span class="cell-desc">公司登记+基金文件包</span></td><td><span class="cell-key">TW_PART</span><span class="cell-desc">合伙协议+GP/LP</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Image modal -->
+        <div class="demo-img-modal" id="imgModal" onclick="this.classList.remove('show')">
+            <img id="imgModalSrc" src="" alt="预览" />
+        </div>
+
+    </div>
+</div>
+
+<!-- Tooltip -->
+<div id="tooltip"></div>
+
+<script>
+var rows = [{"type": "phase", "label": "1. 项目启动", "start": "2026-06-18", "end": "2026-06-19", "status": "完成", "owner": "Erin", "scenario": "all", "days": 2, "phaseId": 0, "expanded": false, "hasChildren": false}, {"type": "phase", "label": "2. 测试环境筹备", "start": "2026-06-18", "end": "2026-06-22", "status": "完成", "owner": "Erin", "scenario": "all", "days": 5, "phaseId": 1, "expanded": false, "hasChildren": false}, {"type": "phase", "label": "3. 需求分析", "start": null, "end": null, "status": "完成", "owner": "", "scenario": "all", "days": 0, "phaseId": 2, "expanded": false, "hasChildren": true}, {"type": "task", "label": "  3.1 场景A需求分析 - 银行信息修改", "start": "2026-06-24", "end": "2026-06-28", "status": "完成", "owner": "Erin", "scenario": "all", "days": 5, "phaseId": 2}, {"type": "task", "label": "  3.2 场景B需求分析 - 地址信息修改", "start": "2026-06-24", "end": "2026-06-28", "status": "完成", "owner": "Erin", "scenario": "all", "days": 5, "phaseId": 2}, {"type": "task", "label": "  3.3 场景C1需求分析 - 个人客户开户审核", "start": "2026-06-24", "end": "2026-07-10", "status": "完成", "owner": "Erin", "scenario": "all", "days": 17, "phaseId": 2}, {"type": "task", "label": "  3.4 需求文档输出 - 场景A&B", "start": "2026-06-28", "end": "2026-07-03", "status": "完成", "owner": "Chase/程明", "scenario": "all", "days": 6, "phaseId": 2}, {"type": "phase", "label": "4. 系统设计及开发", "start": null, "end": null, "status": "完成", "owner": "", "scenario": "all", "days": 0, "phaseId": 3, "expanded": false, "hasChildren": true}, {"type": "task", "label": "  4.1 需求评审会议", "start": "2026-07-07", "end": "2026-07-07", "status": "完成", "owner": "All", "scenario": "all", "days": 1, "phaseId": 3}, {"type": "task", "label": "  4.2 场景A开发 - 银行信息修改", "start": "2026-07-08", "end": "2026-07-13", "status": "完成", "owner": "Chase", "scenario": "all", "days": 6, "phaseId": 3}, {"type": "task", "label": "  4.3 场景B开发 - 地址信息修改", "start": "2026-07-10", "end": "2026-07-15", "status": "完成", "owner": "程明", "scenario": "all", "days": 6, "phaseId": 3}, {"type": "task", "label": "  4.4 场景C1 POC - 个人客户开户审核", "start": "2026-07-20", "end": "2026-07-30", "status": "完成", "owner": "Mandy", "scenario": "all", "days": 11, "phaseId": 3}, {"type": "task", "label": "  4.5 场景C2 POC - 有限公司开户审核", "start": "2026-07-30", "end": "2026-08-10", "status": "完成", "owner": "Mandy", "scenario": "all", "days": 12, "phaseId": 3}, {"type": "task", "label": "  4.6 场景C3 POC - 离岸公司开户审核", "start": "2026-08-10", "end": "2026-08-30", "status": "完成", "owner": "Mandy", "scenario": "all", "days": 21, "phaseId": 3}, {"type": "phase", "label": "5. 测试系统部署", "start": "2026-07-13", "end": "2026-07-15", "status": "完成", "owner": "Chase/程明", "scenario": "all", "days": 3, "phaseId": 4, "expanded": false, "hasChildren": false}, {"type": "phase", "label": "6. SIT / UAT 功能测试", "start": null, "end": null, "status": "完成", "owner": "", "scenario": "all", "days": 0, "phaseId": 5, "expanded": false, "hasChildren": true}, {"type": "task", "label": "  6.1 用户测试培训", "start": "2026-07-10", "end": "2026-07-13", "status": "完成", "owner": "Erin", "scenario": "all", "days": 4, "phaseId": 5}, {"type": "task", "label": "  6.2 用户UAT测试", "start": "2026-07-13", "end": "2026-07-15", "status": "完成", "owner": "Erin", "scenario": "all", "days": 3, "phaseId": 5}, {"type": "task", "label": "  6.3 测试问题修复", "start": "2026-07-13", "end": "2026-07-15", "status": "完成", "owner": "Erin", "scenario": "all", "days": 3, "phaseId": 5}, {"type": "task", "label": "  6.4 场景A验收", "start": "2026-07-13", "end": "2026-07-16", "status": "完成", "owner": "KYC团队", "scenario": "all", "days": 4, "phaseId": 5}, {"type": "task", "label": "  6.5 场景B验收", "start": "2026-07-20", "end": "2026-07-23", "status": "完成", "owner": "KYC团队", "scenario": "all", "days": 4, "phaseId": 5}, {"type": "phase", "label": "7. 系统正式上线", "start": null, "end": null, "status": "进行中", "owner": "All", "scenario": "all", "days": 0, "phaseId": 6, "expanded": false, "hasChildren": true}, {"type": "task", "label": "  7.1 上线前准备", "start": "2026-07-15", "end": "2026-07-17", "status": "未开始", "owner": "All", "scenario": "all", "days": 3, "phaseId": 6}, {"type": "task", "label": "  7.2 OCR服务正式环境申请", "start": "2026-07-15", "end": "2026-07-17", "status": "未开始", "owner": "All", "scenario": "all", "days": 3, "phaseId": 6}, {"type": "task", "label": "  7.3 场景A上线 - 银行信息修改", "start": "2026-07-17", "end": "2026-07-20", "status": "未开始", "owner": "All", "scenario": "all", "days": 4, "phaseId": 6}, {"type": "task", "label": "  7.4 场景B上线 - 地址信息修改", "start": "2026-07-24", "end": "2026-07-28", "status": "未开始", "owner": "All", "scenario": "all", "days": 5, "phaseId": 6}];
+var weeks = [{"label": "06/15", "date": "2026-06-15"}, {"label": "06/22", "date": "2026-06-22"}, {"label": "06/29", "date": "2026-06-29"}, {"label": "07/06", "date": "2026-07-06"}, {"label": "07/13", "date": "2026-07-13"}, {"label": "07/20", "date": "2026-07-20"}, {"label": "07/27", "date": "2026-07-27"}, {"label": "08/03", "date": "2026-08-03"}, {"label": "08/10", "date": "2026-08-10"}, {"label": "08/17", "date": "2026-08-17"}, {"label": "08/24", "date": "2026-08-24"}, {"label": "08/31", "date": "2026-08-31"}];
+var milestones = [{"label": "需求评审", "date": "2026-07-07", "scenario": "all"}, {"label": "场景A上线", "date": "2026-07-20", "scenario": "all"}, {"label": "场景B上线", "date": "2026-07-28", "scenario": "all"}];
+var d = new Date(); var TODAY = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+var REPORT_DATE = '2026年7月10日';
+
+// ---- Top-nav active state on scroll ----
+(function() {
+    var sections = document.querySelectorAll('.section[id]');
+    var navLinks = document.querySelectorAll('.topnav a');
+    function onScroll() {
+        var scrollY = window.scrollY + 80;
+        var current = '';
+        for (var i = 0; i < sections.length; i++) {
+            if (scrollY >= sections[i].offsetTop) current = sections[i].id;
+        }
+        for (var j = 0; j < navLinks.length; j++) {
+            navLinks[j].classList.toggle('active', navLinks[j].getAttribute('href') === '#' + current);
+        }
+    }
+    window.addEventListener('scroll', onScroll);
+})();
+
+// ---- Demo interactivity ----
+function openImg(src) {
+    document.getElementById('imgModal').classList.add('show');
+    document.getElementById('imgModalSrc').src = src;
+}
+
+function switchFeature(el, id) {
+    var shell = el.closest('.sys-shell');
+    var items = shell.querySelectorAll('.sys-nav-item');
+    for (var i = 0; i < items.length; i++) { items[i].classList.remove('active'); }
+    el.classList.add('active');
+    var panels = shell.querySelectorAll('.sys-content-panel');
+    for (var j = 0; j < panels.length; j++) {
+        panels[j].classList.toggle('active', panels[j].getAttribute('data-feature') === id);
+    }
+}
+
+function switchMedia(tab, type) {
+    var tabs = tab.parentElement.querySelectorAll('.demo-media-tab');
+    for (var i = 0; i < tabs.length; i++) { tabs[i].classList.remove('active'); }
+    tab.classList.add('active');
+    var media = tab.parentElement.parentElement;
+    var panels = media.querySelectorAll('.demo-media-panel');
+    for (var j = 0; j < panels.length; j++) {
+        panels[j].style.display = panels[j].getAttribute('data-panel') === type ? 'block' : 'none';
+    }
+    if (type === 'vid') {
+        var vid = media.querySelector('video');
+        if (vid && vid.getAttribute('data-src')) {
+            if (!vid.src || vid.src === window.location.href) {
+                vid.src = encodeURI(vid.getAttribute('data-src'));
+                vid.load();
+            }
+        }
+    }
+}
+
+// ---- Gantt rendering ----
+function statusClass(s) {
+    if (s === '完成') return 'done';
+    if (s === '进行中') return 'progress';
+    return 'pending';
+}
+
+function statusLabel(s) {
+    if (s === '完成') return '已完成';
+    if (s === '进行中') return '进行中';
+    return '未开始';
+}
+
+function fmtDate(iso) { var p = iso.split('-'); return p[1] + '/' + p[2]; }
+
+function fmtDateFull(iso) {
+    var p = iso.split('-'); return p[0] + '年' + parseInt(p[1]) + '月' + parseInt(p[2]) + '日';
+}
+
+function phaseVisibleChildren(phaseId) {
+    var kids = [];
+    for (var i = 0; i < rows.length; i++) {
+        var r = rows[i];
+        if (r.type === 'task' && r.phaseId === phaseId) kids.push(r);
+    }
+    return kids;
+}
+
+function phaseBounds(phaseId) {
+    var kids = phaseVisibleChildren(phaseId);
+    if (kids.length === 0) return null;
+    var minD = kids[0].start;
+    var maxD = kids[0].end;
+    for (var k = 0; k < kids.length; k++) {
+        if (kids[k].start < minD) minD = kids[k].start;
+        if (kids[k].end > maxD) maxD = kids[k].end;
+    }
+    return { start: minD, end: maxD };
+}
+
+function pctLeft(d, rangeStart, rangeDays) {
+    var taskDate = new Date(d + 'T00:00:00');
+    var baseDate = new Date(rangeStart + 'T00:00:00');
+    return ((taskDate - baseDate) / (rangeDays * 86400000)) * 100;
+}
+
+function pctWidth(s, e, rangeDays) {
+    var d0 = new Date(s + 'T00:00:00');
+    var d1 = new Date(e + 'T00:00:00');
+    var days = Math.max((d1 - d0) / 86400000 + 1, 0.5);
+    return (days / rangeDays) * 100;
+}
+
+function chartRange() {
+    return { start: '2026-06-15', end: '2026-09-06' };
+}
+
+function isTodayInRange(s, e) {
+    if (!s || !e) return false;
+    return TODAY >= s && TODAY <= e;
+}
+
+var expanded = {};
+for (var i = 0; i < rows.length; i++) {
+    if (rows[i].type === 'phase') expanded[rows[i].phaseId] = rows[i].expanded;
+}
+
+function togglePhase(pid) {
+    expanded[pid] = !expanded[pid];
+    render();
+}
+
+function buildMonths(weeks) {
+    var months = [];
+    var cur = '';
+    for (var w = 0; w < weeks.length; w++) {
+        var d = new Date(weeks[w].date + 'T00:00:00');
+        var m = d.getFullYear() + '年' + (d.getMonth() + 1) + '月';
+        if (m !== cur) {
+            months.push({ label: m, count: 1 });
+            cur = m;
+        } else {
+            months[months.length - 1].count++;
+        }
+    }
+    return months;
+}
+
+// Tooltip
+var tooltip = document.getElementById('tooltip');
+
+function showTooltip(e) {
+    var bar = e.target.closest('.gantt-bar');
+    var ms = e.target.closest('.milestone-marker');
+    if (bar) {
+        var tip = bar.getAttribute('data-tip');
+        if (!tip) return;
+        var d = JSON.parse(tip);
+        tooltip.innerHTML = '<div class="tip-name">' + d.name + '</div>'
+            + '<div class="tip-row"><span class="tip-label">负责人</span>' + d.owner + '</div>'
+            + '<div class="tip-row"><span class="tip-label">日期</span>' + d.dates + '</div>'
+            + '<div class="tip-row"><span class="tip-label">状态</span>' + d.status + '</div>'
+            + (d.note ? '<div class="tip-row"><span class="tip-label">备注</span>' + d.note + '</div>' : '');
+        tooltip.classList.add('show');
+        positionTooltip(e);
+    } else if (ms) {
+        var label = ms.getAttribute('data-label');
+        var mdate = ms.getAttribute('data-date');
+        tooltip.innerHTML = '<div class="tip-name">' + label + '</div>'
+            + '<div class="tip-row"><span class="tip-label">日期</span>' + fmtDateFull(mdate) + '</div>';
+        tooltip.classList.add('show');
+        positionTooltip(e);
+    }
+}
+
+function moveTooltip(e) {
+    if (tooltip.classList.contains('show')) positionTooltip(e);
+}
+
+function hideTooltip() {
+    tooltip.classList.remove('show');
+}
+
+function positionTooltip(e) {
+    var x = e.clientX + 14;
+    var y = e.clientY - 10;
+    var tw = tooltip.offsetWidth;
+    var th = tooltip.offsetHeight;
+    if (x + tw > window.innerWidth - 10) x = e.clientX - tw - 14;
+    if (y + th > window.innerHeight - 10) y = e.clientY - th - 10;
+    tooltip.style.left = x + 'px';
+    tooltip.style.top = y + 'px';
+}
+
+document.addEventListener('mouseover', showTooltip);
+document.addEventListener('mousemove', moveTooltip);
+document.addEventListener('mouseout', function(e) {
+    if (!e.target.closest('.gantt-bar') && !e.target.closest('.milestone-marker')) hideTooltip();
+});
+
+function render() {
+    var range = chartRange();
+    var rangeDays = Math.round((new Date(range.end + 'T00:00:00') - new Date(range.start + 'T00:00:00')) / 86400000);
+    var todayPct = ((new Date(TODAY + 'T00:00:00') - new Date(range.start + 'T00:00:00')) / (rangeDays * 86400000)) * 100;
+    var showToday = todayPct >= 0 && todayPct <= 100;
+    var months = buildMonths(weeks);
+    var html = '';
+
+    // Month row
+    html += '<div class="gantt-row header-dark">';
+    html += '<div class="left-panel">';
+    html += '<div class="left-col col-label"></div>';
+    html += '<div class="left-col col-owner"></div>';
+    html += '<div class="left-col col-days"></div>';
+    html += '<div class="left-col col-status"></div>';
+    html += '<div class="left-col col-dates"></div>';
+    html += '</div>';
+    html += '<div class="chart-wrapper"><div style="display:flex;">';
+    for (var m = 0; m < months.length; m++) {
+        html += '<div class="month-cell" style="flex:' + months[m].count + ';min-width:' + (months[m].count * 48) + 'px;">' + months[m].label + '</div>';
+    }
+    html += '</div></div></div>';
+
+    // Week header
+    html += '<div class="gantt-row week-header">';
+    html += '<div class="left-panel" style="background:#37474f;border-right-color:#455a64;">';
+    html += '<div class="left-col col-label" style="color:#eceff1;font-weight:600;">任务名称</div>';
+    html += '<div class="left-col col-owner" style="color:#eceff1;font-weight:600;">负责人</div>';
+    html += '<div class="left-col col-days" style="color:#eceff1;font-weight:600;">天数</div>';
+    html += '<div class="left-col col-status" style="color:#eceff1;font-weight:600;">状态</div>';
+    html += '<div class="left-col col-dates" style="color:#eceff1;font-weight:600;">起止日期</div>';
+    html += '</div>';
+    html += '<div class="chart-wrapper"><div style="display:flex;">';
+    for (var w = 0; w < weeks.length; w++) {
+        html += '<div class="week-cell" style="flex:1;min-width:48px;">' + weeks[w].label + '</div>';
+    }
+    html += '</div></div></div>';
+
+    // Milestone row
+    var visMilestones = milestones;
+    var msHidden = visMilestones.length === 0 ? ' hidden' : '';
+    html += '<div class="milestone-row' + msHidden + '">';
+    html += '<div class="milestone-left">里程碑</div>';
+    html += '<div class="milestone-chart" style="position:relative;">';
+    for (var mi = 0; mi < visMilestones.length; mi++) {
+        var ms = visMilestones[mi];
+        var msPct = pctLeft(ms.date, range.start, rangeDays);
+        html += '<div class="milestone-marker" data-label="' + ms.label + '" data-date="' + ms.date + '" style="position:absolute;left:' + msPct + '%;">';
+        html += '<div class="milestone-diamond"></div>';
+        html += '<div class="milestone-label">' + ms.label + '</div>';
+        html += '</div>';
+    }
+    html += '</div></div>';
+
+    // Task rows
+    var visibleCount = 0;
+    var stripeCounter = 0;
+    for (var i = 0; i < rows.length; i++) {
+        var r = rows[i];
+
+        var hidden = false;
+        if (r.type === 'task') {
+            if (!expanded[r.phaseId]) hidden = true;
+        } else if (r.type === 'phase') {
+            if (r.hasChildren && phaseVisibleChildren(r.phaseId).length === 0) hidden = true;
+        }
+
+        if (!hidden) visibleCount++;
+
+        var sClass = statusClass(r.status);
+        var rowClass = r.type === 'phase' ? 'phase' : ('task' + (stripeCounter % 2 === 1 ? ' stripe' : ''));
+        if (r.type === 'task' && !hidden) stripeCounter++;
+
+        var todayActiveClass = '';
+        if (!hidden && r.type === 'task' && isTodayInRange(r.start, r.end)) {
+            todayActiveClass = ' today-active';
+        }
+
+        var overdueClass = '';
+        if (!hidden && r.type === 'task' && r.start && r.end) {
+            if ((r.status === '未开始' && TODAY > r.start) || (r.status === '进行中' && TODAY > r.end)) {
+                overdueClass = ' overdue';
+            }
+        }
+
+        html += '<div class="gantt-row ' + rowClass + (hidden ? ' hidden' : '') + todayActiveClass + overdueClass + '">';
+
+        // Left panel
+        html += '<div class="left-panel">';
+        html += '<div class="left-col col-label">';
+        if (r.type === 'phase') {
+            var hasVis = r.hasChildren && phaseVisibleChildren(r.phaseId).length > 0;
+            var btnClass = hasVis ? (expanded[r.phaseId] ? 'expanded' : 'collapsed') : 'no-children';
+            html += '<span class="toggle-btn ' + btnClass + '"';
+            if (hasVis) html += ' onclick="togglePhase(' + r.phaseId + ')"';
+            html += '>▼</span>';
+        }
+        html += r.label;
+        html += '</div>';
+
+        var daysText = '';
+        if (r.type === 'phase' && !r.start) {
+            var pb = phaseBounds(r.phaseId);
+            if (pb) {
+                var dd = Math.round((new Date(pb.end + 'T00:00:00') - new Date(pb.start + 'T00:00:00')) / 86400000) + 1;
+                daysText = dd;
+            } else {
+                daysText = '—';
+            }
+        } else {
+            daysText = r.days;
+        }
+
+        var dateText = '';
+        if (r.type === 'phase' && !r.start) {
+            var pb2 = phaseBounds(r.phaseId);
+            if (pb2) {
+                dateText = fmtDate(pb2.start) + ' — ' + fmtDate(pb2.end);
+            } else {
+                dateText = '—';
+            }
+        } else {
+            dateText = fmtDate(r.start) + ' — ' + fmtDate(r.end);
+        }
+
+        html += '<div class="left-col col-owner">' + (r.owner || '—') + '</div>';
+        html += '<div class="left-col col-days">' + daysText + '</div>';
+        html += '<div class="left-col col-status"><span class="status-tag ' + sClass + '">' + statusLabel(r.status) + '</span></div>';
+        html += '<div class="left-col col-dates">' + dateText + '</div>';
+        html += '</div>';
+
+        // Chart area
+        html += '<div class="chart-wrapper">';
+        html += '<div class="chart-row ' + rowClass + '" style="position:relative;">';
+
+        html += '<div class="chart-grid">';
+        for (var w = 0; w < weeks.length; w++) {
+            html += '<div class="grid-week" style="flex:1;min-width:48px;"></div>';
+        }
+        html += '</div>';
+
+        var barLeft, barW, barLabel, barStart, barEnd;
+        var isPhase = (r.type === 'phase');
+        if (isPhase) {
+            var bounds = phaseBounds(r.phaseId);
+            if (bounds && bounds.start && bounds.end) {
+                barStart = bounds.start;
+                barEnd = bounds.end;
+                barLeft = pctLeft(barStart, range.start, rangeDays);
+                barW = pctWidth(barStart, barEnd, rangeDays);
+                barLabel = r.label.replace(/^\d+\.\s*/, '');
+            } else if (r.start && r.end) {
+                barStart = r.start;
+                barEnd = r.end;
+                barLeft = pctLeft(barStart, range.start, rangeDays);
+                barW = pctWidth(barStart, barEnd, rangeDays);
+                barLabel = r.label.replace(/^\d+\.\s*/, '');
+            } else {
+                barW = 0;
+            }
+        } else {
+            barStart = r.start;
+            barEnd = r.end;
+            barLeft = pctLeft(barStart, range.start, rangeDays);
+            barW = pctWidth(barStart, barEnd, rangeDays);
+            barLabel = r.label.trim().replace(/^\d+\.\d+\s*/, '');
+        }
+
+        if (barW > 0) {
+            var progressPct = 0;
+            var doneColor = '';
+            var remainColor = '';
+            if (isPhase && r.hasChildren) {
+                var kids = phaseVisibleChildren(r.phaseId);
+                var total = kids.length;
+                var done = 0;
+                for (var k = 0; k < kids.length; k++) {
+                    if (kids[k].status === '完成') done++;
+                }
+                if (total > 0 && done > 0) {
+                    progressPct = Math.round(done / total * 100);
+                }
+                if (r.status === '进行中') { doneColor = '#1565C0'; remainColor = '#64B5F6'; }
+                else if (r.status === '完成') { doneColor = '#2E7D32'; remainColor = '#66BB6A'; }
+                else { doneColor = '#757575'; remainColor = '#BDBDBD'; }
+            }
+
+            var tipData = JSON.stringify({
+                name: r.label.trim().replace(/^\d+\.\s*/, '').replace(/^\d+\.\d+\s*/, ''),
+                owner: r.owner || '—',
+                dates: barStart + ' → ' + barEnd + '（' + (r.days || daysText) + '天）',
+                status: statusLabel(r.status),
+                note: isPhase && r.hasChildren ? '含 ' + (phaseVisibleChildren(r.phaseId).length) + ' 个子任务' : ''
+            });
+
+            if (progressPct > 0) {
+                html += '<div class="gantt-bar ' + sClass + '" style="left:' + barLeft + '%;width:' + barW + '%;background:' + remainColor + ';" data-tip=\'' + tipData + '\'>';
+                var fillClass = progressPct >= 100 ? 'gantt-bar-fill full' : 'gantt-bar-fill';
+                html += '<div class="' + fillClass + '" style="width:' + progressPct + '%;background:' + doneColor + ';"></div>';
+                html += '<span class="gantt-bar-text">' + barLabel + ' ' + progressPct + '%</span>';
+                html += '</div>';
+            } else if (isPhase && r.hasChildren) {
+                html += '<div class="gantt-bar ' + sClass + '" style="left:' + barLeft + '%;width:' + barW + '%;" data-tip=\'' + tipData + '\'>';
+                html += '<span class="gantt-bar-text">' + barLabel + ' 0%</span>';
+                html += '</div>';
+            } else {
+                html += '<div class="gantt-bar ' + sClass + '" style="left:' + barLeft + '%;width:' + barW + '%;" data-tip=\'' + tipData + '\'>';
+                html += '<span class="gantt-bar-text">' + (barLabel || '') + '</span>';
+                html += '</div>';
+            }
+        }
+
+        html += '</div>';
+        if (showToday) {
+            html += '<div class="today-line" style="left:' + todayPct + '%;"></div>';
+        }
+        html += '</div></div>';
+        html += '</div>';
+    }
+
+    document.getElementById('ganttTable').innerHTML = html;
+    renderSummary();
+}
+
+function renderSummary() {
+    var total = 0, done = 0;
+    for (var i = 0; i < rows.length; i++) {
+        var r = rows[i];
+        if (r.type !== 'task') continue;
+        total++;
+        if (r.status === '完成') done++;
+    }
+
+    var pct = total > 0 ? Math.round(done / total * 100) : 0;
+
+    var h = '';
+    h += '<div class="summary-card">';
+    h += '<h3>总体进度</h3>';
+    h += '<div class="summary-row">';
+    h += '<span class="summary-label">全部任务</span>';
+    h += '<div class="summary-bar-wrap">';
+    h += '<div class="summary-bar-fill ab" style="width:' + pct + '%;"></div>';
+    h += '<div class="summary-bar-text">' + done + ' / ' + total + ' 项已完成</div>';
+    h += '</div>';
+    h += '<span class="summary-pct">' + pct + '%</span>';
+    h += '</div>';
+    h += '</div>';
+
+    document.getElementById('summarySection').innerHTML = h;
+}
+
+render();
+</script>
+</body>
+</html>
