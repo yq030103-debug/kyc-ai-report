@@ -93,8 +93,13 @@ body {
     padding: 8px 20px; border-radius: 8px; font-size: 14px; font-weight: 700;
     text-align: center; display: inline-block;
 }
-.org-node.erin { background: #263238; color: #fff; font-size: 16px; padding: 10px 28px; white-space: nowrap; }
-.org-branches { display: flex; gap: 24px; width: 100%; align-items: center; justify-content: center; }
+.org-node.erin {
+    background: #263238; color: #fff; font-size: 16px; padding: 12px 28px;
+    white-space: nowrap; border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
+    position: relative; z-index: 1;
+}
+.org-branches { display: flex; gap: 0; width: 100%; align-items: center; justify-content: center; }
 .org-branch { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; }
 .org-branch-label {
     font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase;
@@ -113,8 +118,15 @@ body {
 .org-connector {
     width: 2px; height: 20px; background: #bdbdbd;
 }
-.org-connector-h {
-    width: 32px; height: 2px; background: #bdbdbd; flex-shrink: 0;
+.org-bridge {
+    display: flex; align-items: center; gap: 0; flex-shrink: 0;
+}
+.org-bridge-bar {
+    width: 36px; height: 5px; background: #263238; border-radius: 3px; flex-shrink: 0;
+}
+.org-bridge-dot {
+    width: 10px; height: 10px; background: #263238; border-radius: 50%; flex-shrink: 0;
+    margin: 0 -2px;
 }
 
 /* ---- Gantt section ---- */
@@ -667,7 +679,9 @@ body {
     .demo-card-media { min-width: 0; }
     .bg-body { flex-direction: column; }
     .org-branches { flex-direction: column; gap: 20px; }
-    .org-connector-h { width: 2px; height: 16px; }
+    .org-bridge { flex-direction: column; }
+    .org-bridge-bar { width: 5px; height: 16px; }
+    .org-bridge-dot { margin: -2px 0; }
 }
 
 /* Print */
@@ -749,9 +763,15 @@ body {
                             <div class="org-leaf biz-member">Cheryl<br><small>公司开户</small></div>
                         </div>
                     </div>
-                    <div class="org-connector-h"></div>
+                    <div class="org-bridge">
+                        <div class="org-bridge-bar"></div>
+                        <div class="org-bridge-dot"></div>
+                    </div>
                     <div class="org-node erin">俞沁 Erin &nbsp;—&nbsp; PM / 需求 / 测试</div>
-                    <div class="org-connector-h"></div>
+                    <div class="org-bridge">
+                        <div class="org-bridge-dot"></div>
+                        <div class="org-bridge-bar"></div>
+                    </div>
                     <div class="org-branch">
                         <div class="org-branch-label">IT 侧</div>
                         <div class="org-row">
