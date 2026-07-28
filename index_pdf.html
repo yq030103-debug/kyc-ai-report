@@ -776,6 +776,29 @@ body {
     .org-bridge-bar { width: 24px; height: 4px; }
     .org-bridge-dot { width: 8px; height: 8px; }
 
+    /* System testing — 2x2 grid */
+    .test-body { padding: 14px 20px 18px; }
+    .test-overview { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+    .test-stat-card { padding: 16px 20px; border-radius: 6px; }
+    .test-stat-card .big { font-size: 32px; }
+    .test-stat-card .lbl { font-size: 12px; }
+    .test-table-wrap { overflow-x: visible; margin-bottom: 0; }
+    .test-table { font-size: 11px; }
+    .test-table th { padding: 7px 8px; font-size: 10px; }
+    .test-table td { padding: 6px 8px; }
+
+    /* SFC panel — new page */
+    .sys-content-panel[data-feature="sfc-lookup"] { page-break-before: always; }
+
+    /* Company account matrix — standalone page */
+    .demo-card:last-of-type { page-break-before: always; }
+    .demo-matrix-table { font-size: 10px; }
+    .demo-matrix-table th { padding: 6px 8px; font-size: 10px; }
+    .demo-matrix-table td { padding: 5px 6px; }
+    .cell-key { font-size: 9px; }
+    .cell-desc { font-size: 9px; }
+    .jurisdiction { font-size: 10px; padding: 5px 8px; }
+
     /* Footer / meta */
     .demo-desc { margin-bottom: 0; }
 }
