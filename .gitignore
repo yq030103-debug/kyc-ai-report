@@ -1,0 +1,7 @@
+originals/
+*_compressed.mp4
+启动服务器.bat
+ffmpeg.zip
+node_modules/
+.DS_Store
+Thumbs.db
