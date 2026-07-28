@@ -788,11 +788,11 @@ body {
     .test-table th { padding: 8px 10px; font-size: 11px; }
     .test-table td { padding: 7px 10px; }
 
+    /* Each demo card on its own page */
+    .demo-card + .demo-card { page-break-before: always; }
+
     /* SFC panel — new page */
     .sys-content-panel[data-feature="sfc-lookup"] { page-break-before: always; }
-
-    /* Company account matrix — standalone page */
-    .demo-card:last-of-type { page-break-before: always; }
     .demo-matrix-table { font-size: 11px; }
     .demo-matrix-table th { padding: 7px 10px; font-size: 11px; }
     .demo-matrix-table td { padding: 6px 8px; }
