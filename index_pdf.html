@@ -690,7 +690,7 @@ body {
 
 /* Print */
 @media print {
-    @page { size: A4; margin: 12mm 10mm; }
+    @page { size: A4 landscape; margin: 12mm 10mm; }
     body { background: #fff; padding: 0; font-size: 12px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
     /* Hide all interactive / irrelevant elements */
@@ -719,85 +719,86 @@ body {
     .sec-header h2 { font-size: 17px; }
     .sec-header .num { font-size: 14px; width: 26px; height: 26px; line-height: 26px; }
 
-    /* Gantt chart — compact for A4 */
-    .gantt-wrap { padding: 8px 12px 10px; }
-    .gantt-summary-line { font-size: 12px; padding: 0 0 8px; margin-bottom: 10px; }
-    .gantt-row { min-height: 20px; font-size: 11px; }
-    .chart-row { height: 20px; }
-    .gantt-bar { height: 14px; top: 3px; border-radius: 3px; }
-    .phase .gantt-bar { height: 16px; top: 2px; }
-    .gantt-row .gantt-bar { height: 14px; }
-    .left-panel { border-right-color: #999; padding-right: 6px; }
-    .col-label { width: 150px; font-size: 11px; }
-    .col-owner { width: 48px; font-size: 11px; }
-    .col-days { width: 28px; font-size: 11px; }
-    .col-status { width: 42px; font-size: 11px; }
-    .col-dates { width: 95px; font-size: 10px; }
-    .milestone-left { width: 370px; }
-    .milestone-wrap { gap: 2px; }
-    .chart-cell { font-size: 10px; }
-    .phase .gantt-info { font-size: 12px; }
-    .phase .gantt-meta { font-size: 10px; }
+    /* Gantt chart — relaxed for landscape */
+    .gantt-wrap { padding: 12px 20px 16px; }
+    .gantt-summary-line { font-size: 13px; padding: 0 0 10px; margin-bottom: 12px; }
+    .gantt-row { min-height: 24px; font-size: 12px; }
+    .chart-row { height: 24px; }
+    .gantt-bar { height: 16px; top: 4px; border-radius: 4px; }
+    .phase .gantt-bar { height: 18px; top: 3px; }
+    .gantt-row .gantt-bar { height: 16px; }
+    .left-panel { border-right-color: #999; padding-right: 8px; }
+    .col-label { width: 220px; font-size: 12px; }
+    .col-owner { width: 60px; font-size: 12px; }
+    .col-days { width: 36px; font-size: 12px; }
+    .col-status { width: 50px; font-size: 12px; }
+    .col-dates { width: 110px; font-size: 11px; }
+    .milestone-left { width: 540px; }
+    .milestone-wrap { gap: 4px; }
+    .chart-cell { font-size: 11px; }
+    .phase .gantt-info { font-size: 13px; }
+    .phase .gantt-meta { font-size: 11px; }
 
     /* System mockup */
-    .sys-shell { min-height: auto; border: none; flex-direction: column !important; }
+    .sys-shell { min-height: auto; border: none; }
     .sys-content { flex: 1; }
-    .panel-body { flex-direction: column; }
-    .panel-media { min-width: 0; }
+    .panel-body { flex-direction: row; }
+    .panel-media { min-width: 320px; }
+    .panel-text { flex: 1; }
 
     /* Demo cards */
     .demo-card { page-break-inside: avoid; }
-    .demo-card-header h3 { font-size: 14px; }
-    .demo-card-body { flex-direction: column; }
-    .demo-card-media { min-width: 0; }
+    .demo-card-header h3 { font-size: 15px; }
+    .demo-card-body { flex-direction: row; }
+    .demo-card-media { min-width: 300px; }
     .demo-media-img { max-width: 100%; }
-    .demo-desc .label { font-size: 12px; }
-    .demo-desc .value { font-size: 13px; line-height: 1.6; }
+    .demo-desc .label { font-size: 13px; }
+    .demo-desc .value { font-size: 14px; line-height: 1.7; }
 
     /* Cover */
-    .cover h1 { font-size: 26px; }
-    .cover .role { font-size: 14px; }
-    .cover .meta { font-size: 12px; }
-    .cover .meta span { margin: 0 10px; }
+    .cover h1 { font-size: 32px; }
+    .cover .role { font-size: 16px; }
+    .cover .meta { font-size: 13px; }
+    .cover .meta span { margin: 0 14px; }
 
     /* Self intro */
-    .bg-body { padding: 16px 20px 20px; gap: 20px; }
-    .bg-card { padding: 14px 18px; }
-    .bg-card h3 { font-size: 15px; margin-bottom: 10px; }
-    .bg-card .goal { font-size: 13px; line-height: 1.6; }
+    .bg-body { padding: 20px 28px 28px; gap: 28px; }
+    .bg-card { padding: 16px 22px; }
+    .bg-card h3 { font-size: 16px; margin-bottom: 12px; }
+    .bg-card .goal { font-size: 14px; line-height: 1.8; }
 
     /* Org chart */
-    .org-node { font-size: 12px; padding: 6px 14px; }
-    .org-node.erin { font-size: 12px; padding: 6px 14px; }
-    .org-node.erin small { font-size: 10px; }
-    .org-leaf { font-size: 11px; padding: 4px 10px; }
+    .org-node { font-size: 13px; padding: 7px 16px; }
+    .org-node.erin { font-size: 14px; padding: 8px 18px; }
+    .org-node.erin small { font-size: 11px; }
+    .org-leaf { font-size: 12px; padding: 5px 12px; }
     .org-leaf small { font-size: 10px; }
-    .org-branch-label { font-size: 10px; padding: 3px 10px; }
-    .org-bridge-bar { width: 24px; height: 4px; }
-    .org-bridge-dot { width: 8px; height: 8px; }
+    .org-branch-label { font-size: 11px; padding: 4px 12px; }
+    .org-bridge-bar { width: 30px; height: 4px; }
+    .org-bridge-dot { width: 9px; height: 9px; }
 
     /* System testing — 2x2 grid */
-    .test-body { padding: 14px 20px 18px; }
-    .test-overview { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
-    .test-stat-card { padding: 16px 20px; border-radius: 6px; }
-    .test-stat-card .big { font-size: 32px; }
-    .test-stat-card .lbl { font-size: 12px; }
+    .test-body { padding: 18px 28px 24px; }
+    .test-overview { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 22px; }
+    .test-stat-card { padding: 20px 24px; border-radius: 8px; }
+    .test-stat-card .big { font-size: 38px; }
+    .test-stat-card .lbl { font-size: 13px; }
     .test-table-wrap { overflow-x: visible; margin-bottom: 0; }
-    .test-table { font-size: 11px; }
-    .test-table th { padding: 7px 8px; font-size: 10px; }
-    .test-table td { padding: 6px 8px; }
+    .test-table { font-size: 12px; }
+    .test-table th { padding: 8px 10px; font-size: 11px; }
+    .test-table td { padding: 7px 10px; }
 
     /* SFC panel — new page */
     .sys-content-panel[data-feature="sfc-lookup"] { page-break-before: always; }
 
     /* Company account matrix — standalone page */
     .demo-card:last-of-type { page-break-before: always; }
-    .demo-matrix-table { font-size: 10px; }
-    .demo-matrix-table th { padding: 6px 8px; font-size: 10px; }
-    .demo-matrix-table td { padding: 5px 6px; }
-    .cell-key { font-size: 9px; }
-    .cell-desc { font-size: 9px; }
-    .jurisdiction { font-size: 10px; padding: 5px 8px; }
+    .demo-matrix-table { font-size: 11px; }
+    .demo-matrix-table th { padding: 7px 10px; font-size: 11px; }
+    .demo-matrix-table td { padding: 6px 8px; }
+    .cell-key { font-size: 10px; }
+    .cell-desc { font-size: 10px; }
+    .jurisdiction { font-size: 11px; padding: 6px 10px; }
 
     /* Footer / meta */
     .demo-desc { margin-bottom: 0; }
