@@ -693,14 +693,17 @@ body {
     @page { size: A3 landscape; margin: 10mm; }
     body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .topnav { display: none; }
-    .section { box-shadow: none; border-radius: 0; max-width: 100%; margin: 0 0 16px; page-break-inside: avoid; }
-    .cover { padding: 32px 24px 28px; page-break-after: always; }
+    .section { box-shadow: none; border-radius: 0; max-width: 100%; margin: 0 0 12px; page-break-inside: avoid; }
+    .cover { min-height: auto; padding: 40px 24px 36px; page-break-after: always; }
     .gantt-row.hidden { display: flex !important; }
     .gantt-row { min-height: 28px; }
     .chart-row { height: 28px; }
     .gantt-bar { height: 20px; top: 4px; }
     .phase .gantt-bar { height: 22px; top: 3px; }
-    .today-line, #tooltip, .toggle-btn, .demo-media-tabs { display: none !important; }
+    .today-line, #tooltip, .toggle-btn, .demo-media-tabs, video, .sys-sidebar { display: none !important; }
+    .sys-content-panel { display: block !important; margin-bottom: 20px; border-bottom: 1px dashed #ddd; padding-bottom: 16px; }
+    .demo-media-panel[data-panel="vid"] { display: none !important; }
+    .demo-media-panel[data-panel="img"] { display: block !important; }
     .left-panel { border-right-color: #999; }
     .col-label { width: 280px; }
     .col-owner { width: 70px; }
@@ -708,6 +711,8 @@ body {
     .col-status { width: 56px; }
     .col-dates { width: 130px; }
     .milestone-left { width: 576px; }
+    .sys-shell { min-height: auto; border: none; }
+    .sys-content { flex: 1; }
 }
 </style>
 </head>
