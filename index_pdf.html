@@ -690,8 +690,8 @@ body {
 
 /* Print */
 @media print {
-    @page { size: A3 landscape; margin: 8mm; }
-    body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @page { size: A4; margin: 12mm 10mm; }
+    body { background: #fff; padding: 0; font-size: 12px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
     /* Hide all interactive / irrelevant elements */
     .topnav, video, .sys-sidebar, .demo-media-tabs, .today-line,
@@ -699,15 +699,15 @@ body {
     .demo-chip, .nav-chip, .nav-icon, .demo-media-tab { display: none !important; }
 
     /* Show all hidden content panels */
-    .sys-content-panel { display: block !important; margin-bottom: 28px; padding-bottom: 18px; border-bottom: 1px dashed #bbb; }
+    .sys-content-panel { display: block !important; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px dashed #bbb; }
     .sys-content-panel:last-child { border-bottom: none; margin-bottom: 0; }
     .demo-media-panel[data-panel="vid"] { display: none !important; }
     .demo-media-panel[data-panel="img"] { display: block !important; }
     .gantt-row.hidden { display: flex !important; }
 
-    /* Page breaks — each major section on new page */
-    .section { box-shadow: none; border-radius: 0; max-width: 100%; margin: 0 0 6px; }
-    .cover { min-height: auto; padding: 80px 48px 60px; page-break-after: always; }
+    /* Page breaks */
+    .section { box-shadow: none; border-radius: 0; max-width: 100%; margin: 0 0 4px; }
+    .cover { min-height: auto; padding: 60px 32px 48px; page-break-after: always; }
     #bg  { page-break-before: always; }
     #req { page-break-before: always; }
     #plan{ page-break-before: always; }
@@ -715,23 +715,29 @@ body {
     #demo{ page-break-before: always; }
 
     /* Section headers */
-    .sec-header { padding: 14px 28px; }
-    .sec-header h2 { font-size: 20px; }
+    .sec-header { padding: 10px 20px; }
+    .sec-header h2 { font-size: 17px; }
+    .sec-header .num { font-size: 14px; width: 26px; height: 26px; line-height: 26px; }
 
-    /* Gantt chart */
-    .gantt-wrap { padding: 10px 20px 14px; }
-    .gantt-row { min-height: 26px; }
-    .chart-row { height: 26px; }
-    .gantt-bar { height: 18px; top: 4px; }
-    .phase .gantt-bar { height: 20px; top: 3px; }
-    .left-panel { border-right-color: #999; }
-    .col-label { width: 260px; }
-    .col-owner { width: 60px; }
-    .col-days { width: 36px; }
-    .col-status { width: 50px; }
-    .col-dates { width: 115px; }
-    .milestone-left { width: 521px; }
-    .milestone-wrap { gap: 4px; }
+    /* Gantt chart — compact for A4 */
+    .gantt-wrap { padding: 8px 12px 10px; }
+    .gantt-summary-line { font-size: 12px; padding: 0 0 8px; margin-bottom: 10px; }
+    .gantt-row { min-height: 20px; font-size: 11px; }
+    .chart-row { height: 20px; }
+    .gantt-bar { height: 14px; top: 3px; border-radius: 3px; }
+    .phase .gantt-bar { height: 16px; top: 2px; }
+    .gantt-row .gantt-bar { height: 14px; }
+    .left-panel { border-right-color: #999; padding-right: 6px; }
+    .col-label { width: 150px; font-size: 11px; }
+    .col-owner { width: 48px; font-size: 11px; }
+    .col-days { width: 28px; font-size: 11px; }
+    .col-status { width: 42px; font-size: 11px; }
+    .col-dates { width: 95px; font-size: 10px; }
+    .milestone-left { width: 370px; }
+    .milestone-wrap { gap: 2px; }
+    .chart-cell { font-size: 10px; }
+    .phase .gantt-info { font-size: 12px; }
+    .phase .gantt-meta { font-size: 10px; }
 
     /* System mockup */
     .sys-shell { min-height: auto; border: none; flex-direction: column !important; }
@@ -741,14 +747,37 @@ body {
 
     /* Demo cards */
     .demo-card { page-break-inside: avoid; }
+    .demo-card-header h3 { font-size: 14px; }
     .demo-card-body { flex-direction: column; }
     .demo-card-media { min-width: 0; }
     .demo-media-img { max-width: 100%; }
+    .demo-desc .label { font-size: 12px; }
+    .demo-desc .value { font-size: 13px; line-height: 1.6; }
 
     /* Cover */
-    .cover h1 { font-size: 36px; }
-    .cover .role { font-size: 18px; }
-    .cover .meta { font-size: 15px; }
+    .cover h1 { font-size: 26px; }
+    .cover .role { font-size: 14px; }
+    .cover .meta { font-size: 12px; }
+    .cover .meta span { margin: 0 10px; }
+
+    /* Self intro */
+    .bg-body { padding: 16px 20px 20px; gap: 20px; }
+    .bg-card { padding: 14px 18px; }
+    .bg-card h3 { font-size: 15px; margin-bottom: 10px; }
+    .bg-card .goal { font-size: 13px; line-height: 1.6; }
+
+    /* Org chart */
+    .org-node { font-size: 12px; padding: 6px 14px; }
+    .org-node.erin { font-size: 12px; padding: 6px 14px; }
+    .org-node.erin small { font-size: 10px; }
+    .org-leaf { font-size: 11px; padding: 4px 10px; }
+    .org-leaf small { font-size: 10px; }
+    .org-branch-label { font-size: 10px; padding: 3px 10px; }
+    .org-bridge-bar { width: 24px; height: 4px; }
+    .org-bridge-dot { width: 8px; height: 8px; }
+
+    /* Footer / meta */
+    .demo-desc { margin-bottom: 0; }
 }
 </style>
 </head>
